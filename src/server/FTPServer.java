@@ -1,6 +1,6 @@
 package server;
 
-import view.Observer;
+import logging.Observer;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -49,7 +49,14 @@ public class FTPServer implements Observable {
     public void run() {
         try {
             while(true) {
-                this.log("message");
+                try {
+                    Thread.sleep(5000);
+                }
+                catch(Exception ex) {
+
+                }
+                System.out.println("Yohoo!!!");
+                this.log("Yohoo!!!");
                 SocketChannel socketChannel = this.socketPI.accept();
                 FTPServerPI pi = new FTPServerPI(socketChannel);
                 pi.start();

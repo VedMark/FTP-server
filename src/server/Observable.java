@@ -1,6 +1,6 @@
 package server;
 
-import view.Observer;
+import logging.Observer;
 
 import java.util.ArrayList;
 

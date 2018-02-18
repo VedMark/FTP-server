@@ -1,5 +1,5 @@
 import server.FTPServer;
-import view.LogWindow;
+import logging.LogWindow;
 
 public class Main {
     private static final String configFile = "config.properties";
@@ -8,8 +8,8 @@ public class Main {
         FTPServer ftpServer = new FTPServer(configFile);
 
         LogWindow logWindow = new LogWindow();
-        logWindow.initialize();
         ftpServer.addView(logWindow);
+        logWindow.initialize();
 
         ftpServer.run();
     }
