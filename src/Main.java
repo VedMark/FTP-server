@@ -1,43 +1,32 @@
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import server.FTPServer;
+import view.FXServerApp;
 
-import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
-public class Main extends Application {
-    private static final String CONFIG_FILE = "config.properties";
-
-    private TextArea logArea;
-
-    @Override
-    public void start(Stage primaryStage) {
-        StackPane root = new StackPane();
-        this.logArea = new TextArea();
-        this.logArea.setEditable(false);
-
-        root.getChildren().add(this.logArea);
-
-        primaryStage.setTitle("FTP server");
-        primaryStage.setScene(new Scene(root, 500, 300));
-        primaryStage.show();
-
-        new Thread(() -> {
-            try {
-                FTPServer server = new FTPServer(CONFIG_FILE);
-                server.setView(this.logArea);
-                server.run();
+public class Main {
+    private static void printAddresses() throws SocketException {
+        Enumeration e = NetworkInterface.getNetworkInterfaces();
+        while(e.hasMoreElements())
+        {
+            NetworkInterface n = (NetworkInterface) e.nextElement();
+            Enumeration ee = n.getInetAddresses();
+            while (ee.hasMoreElements())
+            {
+                InetAddress i = (InetAddress) ee.nextElement();
+                System.out.println(i.getHostAddress());
             }
-            catch (IOException exception) {
-                System.out.println("I/O exception");
-                System.exit(1);
-            }
-        }).start();
+        }
     }
 
     public static void main(String[] args) {
-        launch(args);
+        // TODO: remove later
+        try {
+            printAddresses();
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        FXServerApp.start();
     }
 }

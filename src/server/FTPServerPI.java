@@ -1,30 +1,36 @@
 package server;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import command.QUIT;
+import command.Command;
+import view.View;
+
+import java.io.*;
 import java.net.Socket;
 
 class FTPServerPI implements Runnable {
-    final private String CHAR_ENCODING = "UTF-8";
-
-    private RequestController requestController = new RequestController();
-    private FTPServerDTP serverDTP = new FTPServerDTP();
+    final static private String WELCOME_MESSAGE = "----------220-Welcome to FTP-server----------\n";
 
     private Socket socket;
-    private FTPProperties ftpProperties;
-    private Thread thread;
     private final BufferedReader reader;
-    private final DataOutputStream writer;
+    private final BufferedWriter writer;
 
-    FTPServerPI(Socket socket, FTPProperties ftpProperties) throws IOException {
+    private FTPServerDTP serverDTP = new FTPServerDTP();
+    private FTPCommandController requestController = new FTPCommandController();
+    private FTPProperties ftpProperties;
+
+    private Thread thread = null;
+
+    private View view;
+
+    FTPServerPI(Socket socket, FTPProperties ftpProperties, View view) throws IOException {
         this.socket = socket;
         this.ftpProperties = ftpProperties;
         this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.writer = new DataOutputStream(socket.getOutputStream());
+        this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-        sendMessage("----------220-Welcome to FTP-server----------");
+        this.view = view;
+
+        sendMessage(WELCOME_MESSAGE);
     }
 
     public void start() {
@@ -34,26 +40,56 @@ class FTPServerPI implements Runnable {
         }
     }
 
-    public void run() {
-        System.out.println("Server PI: run()");
-    }
+    public void stop() {
+        if(this.thread != null) {
+            this.thread.interrupt();
+            this.thread = null;
+        }
 
-    public void destroy() {
-
-    }
-
-    private void sendMessage(String message) throws IOException{
-        //ByteBuffer buffer = ByteBuffer.wrap((message + "\n").getBytes(CHAR_ENCODING));
-
-        //while (buffer.hasRemaining()) {
-            if(this.socket != null) {
-                this.writer.write((message + "\n").getBytes(CHAR_ENCODING));
-                this.writer.flush();
+        if(this.socket != null) {
+            try{
+                this.socket.close();
             }
-        //}
+            catch (IOException exception) {
+                System.out.println(exception.getMessage());
+            }
+            this.socket = null;
+        }
     }
 
-    public void receiveMessage() {
+    public void run() {
+        try {
+            while (true) {
+                Command request = receiveMessage();
 
+                if(request instanceof QUIT) break;
+
+                request.execute();
+
+                //sendMessage("hello");
+            }
+        }
+        catch (IOException exception) {
+            // TODO: send error code
+        }
+        this.stop();
+    }
+
+    private void sendMessage(String message) throws IOException {
+        this.writer.write(message);
+        this.writer.flush();
+        this.log(message);
+    }
+
+    private Command receiveMessage() throws IOException {
+        String message = reader.readLine();
+
+        Command request = FTPCommandController.createRequest(message);
+        this.log(message);
+        return null;
+    }
+
+    private void log(String info) {
+        this.view.update(info);
     }
 }

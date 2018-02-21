@@ -1,7 +1,7 @@
 package command;
 
-public class PWD implements Command {
+public class QUIT implements Command {
+    @Override
     public void execute() {
-
     }
 }

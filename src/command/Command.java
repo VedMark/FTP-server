@@ -1,5 +1,5 @@
 package command;
 
-public interface Request {
+public interface Command {
     void execute();
 }
