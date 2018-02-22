@@ -7,8 +7,9 @@ public class RNTO implements Command {
     private FTPServerDTP receiver;
     private String pathname;
 
-    public RNTO(FTPServerDTP serverDTP) {
+    public RNTO(FTPServerDTP serverDTP, String pathname) {
         this.receiver = serverDTP;
+        this.pathname = pathname;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class RNTO implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.pathname = param;
-    }
 }

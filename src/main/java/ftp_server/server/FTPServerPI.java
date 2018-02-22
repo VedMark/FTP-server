@@ -1,19 +1,19 @@
 package ftp_server.server;
 
 import ftp_server.Main;
-import ftp_server.command.QUIT;
 import ftp_server.command.Command;
+import ftp_server.command.QUIT;
 import ftp_server.reply.Reply;
 import ftp_server.view.View;
+
 import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 class FTPServerPI implements Runnable {
     private static final Logger log = Logger.getLogger(Main.class.getName());
-
-    private static final String WELCOME_MESSAGE = "220----------Welcome to FTP-server----------\n";
 
     private Socket socket;
     private final BufferedReader reader;
@@ -33,7 +33,11 @@ class FTPServerPI implements Runnable {
         this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-        sendMessage(WELCOME_MESSAGE);
+        Reply reply = new Reply(220, new ArrayList<>());
+        reply.appendMessageList("----------Welcome to FTP-server----------");
+        reply.appendMessageList("Service ready");
+
+        sendMessage(reply.getMessage());
     }
 
     public void start() {
@@ -73,11 +77,12 @@ class FTPServerPI implements Runnable {
     private void listenToConnections() throws IOException {
         while (true) {
             Command request = receiveMessage();
+            Reply reply = request.execute();
+            sendMessage(reply.getMessage());
+
             if(request instanceof QUIT) {
                 break;
             }
-            Reply reply = request.execute();
-            sendMessage(reply.toString());
         }
     }
 
@@ -89,7 +94,12 @@ class FTPServerPI implements Runnable {
 
     private Command receiveMessage() throws IOException {
         String message = reader.readLine();
-        Command request = cmdController.createCommand(message);
+        Command request = null;
+        try {
+            request = cmdController.createCommand(message);
+        } catch (SyntaxErrorException exception) {
+            this.sendMessage(exception.getMessage());
+        }
         this.updateDialog(message);
         return request;
     }

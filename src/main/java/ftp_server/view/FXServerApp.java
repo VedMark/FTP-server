@@ -32,7 +32,7 @@ public class FXServerApp extends Application {
 
         primaryStage.setTitle("FTP server");
         primaryStage.setScene(new Scene(root, 500, 300));
-        primaryStage.show();
+        //primaryStage.show();
 
         new Thread(() -> {
             try {

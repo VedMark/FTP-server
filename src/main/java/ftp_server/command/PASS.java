@@ -7,8 +7,9 @@ public class PASS implements Command {
     private FTPServerDTP receiver;
     private String password;
 
-    public PASS(FTPServerDTP serverDTP) {
+    public PASS(FTPServerDTP serverDTP, String password) {
         this.receiver = serverDTP;
+        this.password = password;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class PASS implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.password = param;
-    }
 }

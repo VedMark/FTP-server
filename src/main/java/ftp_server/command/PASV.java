@@ -2,7 +2,6 @@ package ftp_server.command;
 
 import ftp_server.reply.Reply;
 import ftp_server.server.FTPServerDTP;
-import java.lang.UnsupportedOperationException;
 
 public class PASV implements Command {
     private FTPServerDTP receiver;
@@ -16,9 +15,5 @@ public class PASV implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
-    }
 }
 

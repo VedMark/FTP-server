@@ -7,8 +7,9 @@ public class ALLO implements Command {
     private FTPServerDTP receiver;
     private String dec_int;
 
-    public ALLO(FTPServerDTP serverDTP) {
+    public ALLO(FTPServerDTP serverDTP, String dec_int) {
         this.receiver = serverDTP;
+        this.dec_int = dec_int;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class ALLO implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.dec_int = param;
-    }
 }

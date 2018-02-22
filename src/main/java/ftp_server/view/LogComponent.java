@@ -17,7 +17,7 @@ public class LogComponent implements View{
     @Override
     public void update(String info) {
         final String text = info;
-        System.out.println(text);
+        System.out.print(text);
         Platform.runLater(() -> this.logArea.appendText(text));
     }
 }

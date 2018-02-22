@@ -7,8 +7,9 @@ public class USER implements Command {
     private FTPServerDTP receiver;
     private String username;
 
-    public USER(FTPServerDTP serverDTP) {
+    public USER(FTPServerDTP serverDTP, String username) {
         this.receiver = serverDTP;
+        this.username = username;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class USER implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        username = param;
-    }
 }

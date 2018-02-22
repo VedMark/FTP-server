@@ -7,8 +7,9 @@ public class APPE implements Command {
     private FTPServerDTP receiver;
     private String pathname;
 
-    public APPE(FTPServerDTP serverDTP) {
+    public APPE(FTPServerDTP serverDTP, String pathname) {
         this.receiver = serverDTP;
+        this.pathname = pathname;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class APPE implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.pathname = param;
-    }
 }

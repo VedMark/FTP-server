@@ -7,8 +7,9 @@ public class REST implements Command {
     private FTPServerDTP receiver;
     private String marker;
 
-    public REST(FTPServerDTP serverDTP) {
+    public REST(FTPServerDTP serverDTP, String marker) {
         this.receiver = serverDTP;
+        this.marker = marker;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class REST implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.marker = param;
-    }
 }

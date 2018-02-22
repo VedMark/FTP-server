@@ -7,8 +7,9 @@ public class MODE implements Command {
     private FTPServerDTP receiver;
     private String mode_code;
 
-    public MODE(FTPServerDTP serverDTP) {
+    public MODE(FTPServerDTP serverDTP, String mode_code) {
         this.receiver = serverDTP;
+        this.mode_code = mode_code;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class MODE implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.mode_code = param;
-    }
 }

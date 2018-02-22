@@ -1,51 +1,15 @@
 package ftp_server.server;
 
 import ftp_server.command.*;
-import java.lang.UnsupportedOperationException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 class FTPCommandController {
-    private Map<CommandType, Command> commandsMap = new HashMap<>();
+    private FTPServerDTP serverDTP;
 
     FTPCommandController(FTPServerDTP serverDTP) {
-        this.commandsMap.put(CommandType.USER,  new USER(serverDTP));
-        this.commandsMap.put(CommandType.PASS,  new PASS(serverDTP));
-        this.commandsMap.put(CommandType.ACCT,  new ACCT(serverDTP));
-        this.commandsMap.put(CommandType.CWD,   new CWD(serverDTP));
-        this.commandsMap.put(CommandType.CDUP,  new CDUP(serverDTP));
-        this.commandsMap.put(CommandType.SMNT,  new SMNT(serverDTP));
-        this.commandsMap.put(CommandType.QUIT,  new QUIT(serverDTP));
-        this.commandsMap.put(CommandType.REIN,  new REIN(serverDTP));
-        this.commandsMap.put(CommandType.PORT,  new PORT(serverDTP));
-        this.commandsMap.put(CommandType.PASV,  new PASV(serverDTP));
-        this.commandsMap.put(CommandType.TYPE,  new TYPE(serverDTP));
-        this.commandsMap.put(CommandType.STRU,  new STRU(serverDTP));
-        this.commandsMap.put(CommandType.MODE,  new MODE(serverDTP));
-        this.commandsMap.put(CommandType.RETR,  new RETR(serverDTP));
-        this.commandsMap.put(CommandType.STOR,  new STOR(serverDTP));
-        this.commandsMap.put(CommandType.STOU,  new STOU(serverDTP));
-        this.commandsMap.put(CommandType.APPE,  new APPE(serverDTP));
-        this.commandsMap.put(CommandType.ALLO,  new ALLO(serverDTP));
-        this.commandsMap.put(CommandType.REST,  new REST(serverDTP));
-        this.commandsMap.put(CommandType.RNFR,  new RNFR(serverDTP));
-        this.commandsMap.put(CommandType.RNTO,  new RNTO(serverDTP));
-        this.commandsMap.put(CommandType.ABOR,  new ABOR(serverDTP));
-        this.commandsMap.put(CommandType.DELE,  new DELE(serverDTP));
-        this.commandsMap.put(CommandType.RMD,   new RMD(serverDTP));
-        this.commandsMap.put(CommandType.MKD,   new MKD(serverDTP));
-        this.commandsMap.put(CommandType.PWD,   new PWD(serverDTP));
-        this.commandsMap.put(CommandType.LIST,  new LIST(serverDTP));
-        this.commandsMap.put(CommandType.NLST,  new NLST(serverDTP));
-        this.commandsMap.put(CommandType.SITE,  new SITE(serverDTP));
-        this.commandsMap.put(CommandType.SYST,  new SYST(serverDTP));
-        this.commandsMap.put(CommandType.STAT,  new STAT(serverDTP));
-        this.commandsMap.put(CommandType.HELP,  new HELP(serverDTP));
-        this.commandsMap.put(CommandType.NOOP,  new NOOP(serverDTP));
+        this.serverDTP = serverDTP;
     }
 
-    public Command createCommand(String message) {
+    public Command createCommand(String message) throws SyntaxErrorException {
         String cmd;
         String param = null;
         if(message.indexOf(' ') != -1) {
@@ -56,15 +20,49 @@ class FTPCommandController {
             cmd = message;
         }
         cmd = cmd.toUpperCase();
+
         return newCommand(cmd, param);
     }
 
-    private Command newCommand(String cmd, String param) {
-        Command command = this.commandsMap.get(CommandType.valueOf(cmd));
-        try {
-            command.setParam(param);
-        }
-        catch (UnsupportedOperationException ignored) {
+    private Command newCommand(String cmd, String param) throws SyntaxErrorException {
+        Command command;
+
+        switch(CommandEnum.valueOf(cmd)) {
+            case USER:  command = new USER(this.serverDTP, param);  break;
+            case PASS:  command = new PASS(this.serverDTP, param);  break;
+            case ACCT:  command = new ACCT(this.serverDTP, param);  break;
+            case CWD:   command = new CWD(this.serverDTP, param);   break;
+            case CDUP:  command = new CDUP(this.serverDTP);         break;
+            case SMNT:  command = new SMNT(this.serverDTP, param);  break;
+            case QUIT:  command = new QUIT(this.serverDTP);         break;
+            case REIN:  command = new REIN(this.serverDTP);         break;
+            case PORT:  command = new PORT(this.serverDTP, param);  break;
+            case PASV:  command = new PASV(this.serverDTP);         break;
+            case TYPE:  command = new TYPE(this.serverDTP, param);  break;
+            case STRU:  command = new STRU(this.serverDTP, param);  break;
+            case MODE:  command = new MODE(this.serverDTP, param);  break;
+            case RETR:  command = new RETR(this.serverDTP, param);  break;
+            case STOR:  command = new STOR(this.serverDTP, param);  break;
+            case STOU:  command = new STOU(this.serverDTP);         break;
+            case APPE:  command = new APPE(this.serverDTP, param);  break;
+            case ALLO:  command = new ALLO(this.serverDTP, param);  break;
+            case REST:  command = new REST(this.serverDTP, param);  break;
+            case RNFR:  command = new RNFR(this.serverDTP, param);  break;
+            case RNTO:  command = new RNTO(this.serverDTP, param);  break;
+            case ABOR:  command = new ABOR(this.serverDTP);         break;
+            case DELE:  command = new DELE(this.serverDTP, param);  break;
+            case RMD:   command = new RMD(this.serverDTP, param);   break;
+            case MKD:   command = new MKD(this.serverDTP, param);   break;
+            case PWD:   command = new PWD(this.serverDTP);          break;
+            case LIST:  command = new LIST(this.serverDTP, param);  break;
+            case NLST:  command = new NLST(this.serverDTP, param);  break;
+            case SITE:  command = new SITE(this.serverDTP, param);  break;
+            case SYST:  command = new SYST(this.serverDTP);         break;
+            case STAT:  command = new STAT(this.serverDTP, param);  break;
+            case HELP:  command = new HELP(this.serverDTP, param);  break;
+            case NOOP:  command = new NOOP(this.serverDTP);         break;
+
+            default: throw new SyntaxErrorException();
         }
 
         return command;

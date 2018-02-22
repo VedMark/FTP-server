@@ -7,8 +7,9 @@ public class RMD implements Command {
     private FTPServerDTP receiver;
     private String pathname;
 
-    public RMD(FTPServerDTP serverDTP) {
+    public RMD(FTPServerDTP serverDTP, String pathname) {
         this.receiver = serverDTP;
+        this.pathname = pathname;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class RMD implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.pathname = param;
-    }
 }

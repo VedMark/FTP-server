@@ -7,8 +7,9 @@ public class MKD implements Command {
     private FTPServerDTP receiver;
     private String pathname;
 
-    public MKD(FTPServerDTP serverDTP) {
+    public MKD(FTPServerDTP serverDTP, String pathname) {
         this.receiver = serverDTP;
+        this.pathname = pathname;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class MKD implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.pathname = param;
-    }
 }

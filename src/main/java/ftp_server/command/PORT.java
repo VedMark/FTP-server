@@ -7,8 +7,9 @@ public class PORT implements Command {
     private FTPServerDTP receiver;
     private String host_port;
 
-    public PORT(FTPServerDTP serverDTP) {
+    public PORT(FTPServerDTP serverDTP, String host_port) {
         this.receiver = serverDTP;
+        this.host_port = host_port;
     }
 
     @Override
@@ -16,9 +17,5 @@ public class PORT implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.host_port = param;
-    }
 }
 

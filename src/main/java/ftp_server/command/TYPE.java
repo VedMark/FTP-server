@@ -7,8 +7,9 @@ public class TYPE implements Command {
     private FTPServerDTP receiver;
     private String type_code;
 
-    public TYPE(FTPServerDTP serverDTP) {
+    public TYPE(FTPServerDTP serverDTP, String type_code) {
         this.receiver = serverDTP;
+        this.type_code = type_code;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class TYPE implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.type_code = param;
-    }
 }

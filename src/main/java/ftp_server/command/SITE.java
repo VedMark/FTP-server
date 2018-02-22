@@ -7,8 +7,9 @@ public class SITE implements Command {
     private FTPServerDTP receiver;
     private String string;
 
-    public SITE(FTPServerDTP serverDTP) {
+    public SITE(FTPServerDTP serverDTP, String string) {
         this.receiver = serverDTP;
+        this.string = string;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class SITE implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.string = param;
-    }
 }

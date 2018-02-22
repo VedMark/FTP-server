@@ -7,8 +7,9 @@ public class STRU implements Command {
     private FTPServerDTP receiver;
     private String structure_code;
 
-    public STRU(FTPServerDTP serverDTP) {
+    public STRU(FTPServerDTP serverDTP, String structure_code) {
         this.receiver = serverDTP;
+        this.structure_code = structure_code;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class STRU implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.structure_code = param;
-    }
 }

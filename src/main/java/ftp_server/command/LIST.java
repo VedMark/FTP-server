@@ -7,8 +7,9 @@ public class LIST implements Command {
     private FTPServerDTP receiver;
     private String pathname;
 
-    public LIST(FTPServerDTP serverDTP) {
+    public LIST(FTPServerDTP serverDTP, String pathname) {
         this.receiver = serverDTP;
+        this.pathname = pathname;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class LIST implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.pathname = param;
-    }
 }

@@ -7,8 +7,9 @@ public class ACCT implements Command {
     private FTPServerDTP receiver;
     private String accInfo;
 
-    public ACCT(FTPServerDTP serverDTP) {
+    public ACCT(FTPServerDTP serverDTP, String accInfo) {
         this.receiver = serverDTP;
+        this.accInfo = accInfo;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class ACCT implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.accInfo = param;
-    }
 }

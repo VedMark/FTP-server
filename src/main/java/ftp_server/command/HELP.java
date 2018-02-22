@@ -7,8 +7,9 @@ public class HELP implements Command {
     private FTPServerDTP receiver;
     private String string;
 
-    public HELP(FTPServerDTP serverDTP) {
+    public HELP(FTPServerDTP serverDTP, String string) {
         this.receiver = serverDTP;
+        this.string = string;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class HELP implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.string = param;
-    }
 }

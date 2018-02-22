@@ -7,8 +7,9 @@ public class SMNT implements Command {
     private FTPServerDTP receiver;
     private String pathname;
 
-    public SMNT(FTPServerDTP serverDTP) {
+    public SMNT(FTPServerDTP serverDTP, String pathname) {
         this.receiver = serverDTP;
+        this.pathname = pathname;
     }
 
     @Override
@@ -16,9 +17,5 @@ public class SMNT implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.pathname = param;
-    }
 }
 

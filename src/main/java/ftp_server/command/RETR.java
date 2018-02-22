@@ -7,8 +7,9 @@ public class RETR implements Command {
     private FTPServerDTP receiver;
     private String pathname;
 
-    public RETR(FTPServerDTP serverDTP) {
+    public RETR(FTPServerDTP serverDTP, String pathname) {
         this.receiver = serverDTP;
+        this.pathname = pathname;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class RETR implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.pathname = param;
-    }
 }

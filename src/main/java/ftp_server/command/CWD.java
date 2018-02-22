@@ -7,8 +7,9 @@ public class CWD implements Command {
     private FTPServerDTP receiver;
     private String pathname;
 
-    public CWD(FTPServerDTP serverDTP) {
+    public CWD(FTPServerDTP serverDTP, String pathname) {
         this.receiver = serverDTP;
+        this.pathname = pathname;
     }
 
     @Override
@@ -16,8 +17,4 @@ public class CWD implements Command {
         return null;
     }
 
-    @Override
-    public void setParam(String param) {
-        this.pathname = param;
-    }
 }
