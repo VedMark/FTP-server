@@ -1,21 +1,22 @@
 # FTP-server
-Java FX application realizing FTP-server
+JavaFX application that implements FTP-server
 
 ## Getting Started
 
 ### Prerequisites
-  - javac v.8
-  - JDK v.8
-  - FX
+  - javac 8
+  - JDK 8
+  - JavaFX
+  - log4j 1.2.15
   
 ### Installing
 
 ```
-javac -cp src/ src/Main.java
+make
 ```
 ### Running
 
 ```
-configure file 'config.properties' if needed
-java -cp src/ Main
+configure file 'src/main/resources/config.properties' if needed
+make run
 ```

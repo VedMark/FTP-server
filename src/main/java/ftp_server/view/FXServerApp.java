@@ -1,16 +1,20 @@
-package view;
+package ftp_server.view;
 
-import server.FTPServer;
+import ftp_server.Main;
+import ftp_server.server.ConfigException;
+import ftp_server.server.FTPServer;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
 public class FXServerApp extends Application {
-    private static final String CONFIG_FILE = "config.properties";
+    private static final Logger log = LogManager.getLogger(Main.class);
 
     private LogComponent logComponent;
     private FTPServer server;
@@ -28,17 +32,17 @@ public class FXServerApp extends Application {
 
         primaryStage.setTitle("FTP server");
         primaryStage.setScene(new Scene(root, 500, 300));
-        //primaryStage.show();
+        primaryStage.show();
 
         new Thread(() -> {
             try {
-                this.server = new FTPServer(CONFIG_FILE);
+                this.server = new FTPServer();
                 this.server.setView(this.logComponent);
                 this.server.run();
             }
-            catch (IOException exception) {
-                System.out.println(exception.getMessage());
+            catch (IOException | ConfigException exception) {
                 this.server.destroy();
+                log.fatal(exception.getMessage());
                 System.exit(1);
             }
         }).start();

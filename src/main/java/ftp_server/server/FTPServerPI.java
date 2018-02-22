@@ -1,34 +1,37 @@
-package server;
+package ftp_server.server;
 
-import command.QUIT;
-import command.Command;
-import view.View;
+import ftp_server.Main;
+import ftp_server.command.QUIT;
+import ftp_server.command.Command;
+import ftp_server.reply.Reply;
+import ftp_server.view.View;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
 
 class FTPServerPI implements Runnable {
-    final static private String WELCOME_MESSAGE = "----------220-Welcome to FTP-server----------\n";
+    private static final Logger log = Logger.getLogger(Main.class.getName());
+
+    private static final String WELCOME_MESSAGE = "220----------Welcome to FTP-server----------\n";
 
     private Socket socket;
     private final BufferedReader reader;
     private final BufferedWriter writer;
 
     private FTPServerDTP serverDTP = new FTPServerDTP();
-    private FTPCommandController requestController = new FTPCommandController();
-    private FTPProperties ftpProperties;
+    private FTPCommandController cmdController = new FTPCommandController(this.serverDTP);
 
     private Thread thread = null;
 
     private View view;
 
-    FTPServerPI(Socket socket, FTPProperties ftpProperties, View view) throws IOException {
+    FTPServerPI(Socket socket, View view) throws IOException {
         this.socket = socket;
-        this.ftpProperties = ftpProperties;
+        this.view = view;
+
         this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-
-        this.view = view;
 
         sendMessage(WELCOME_MESSAGE);
     }
@@ -51,7 +54,7 @@ class FTPServerPI implements Runnable {
                 this.socket.close();
             }
             catch (IOException exception) {
-                System.out.println(exception.getMessage());
+                log.error(exception.getMessage());
             }
             this.socket = null;
         }
@@ -59,37 +62,39 @@ class FTPServerPI implements Runnable {
 
     public void run() {
         try {
-            while (true) {
-                Command request = receiveMessage();
-
-                if(request instanceof QUIT) break;
-
-                request.execute();
-
-                //sendMessage("hello");
-            }
+            listenToConnections();
         }
         catch (IOException exception) {
-            // TODO: send error code
+            log.error(exception.getMessage());
         }
         this.stop();
+    }
+
+    private void listenToConnections() throws IOException {
+        while (true) {
+            Command request = receiveMessage();
+            if(request instanceof QUIT) {
+                break;
+            }
+            Reply reply = request.execute();
+            sendMessage(reply.toString());
+        }
     }
 
     private void sendMessage(String message) throws IOException {
         this.writer.write(message);
         this.writer.flush();
-        this.log(message);
+        this.updateDialog(message);
     }
 
     private Command receiveMessage() throws IOException {
         String message = reader.readLine();
-
-        Command request = FTPCommandController.createRequest(message);
-        this.log(message);
-        return null;
+        Command request = cmdController.createCommand(message);
+        this.updateDialog(message);
+        return request;
     }
 
-    private void log(String info) {
+    private void updateDialog(String info) {
         this.view.update(info);
     }
 }

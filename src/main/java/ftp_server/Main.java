@@ -1,4 +1,6 @@
-import view.FXServerApp;
+package ftp_server;
+
+import ftp_server.view.FXServerApp;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -25,8 +27,8 @@ public class Main {
         try {
             printAddresses();
         } catch (SocketException e) {
-            e.printStackTrace();
         }
+
         FXServerApp.start();
     }
 }

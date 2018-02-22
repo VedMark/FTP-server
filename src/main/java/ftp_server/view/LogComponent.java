@@ -1,4 +1,4 @@
-package view;
+package ftp_server.view;
 
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
