@@ -5,6 +5,7 @@ import ftp_server.server.FTPServerDTP;
 
 public class SITE implements Command {
     private FTPServerDTP receiver;
+    Reply reply;
     private String string;
 
     public SITE(FTPServerDTP serverDTP, String string) {
@@ -13,7 +14,12 @@ public class SITE implements Command {
     }
 
     @Override
-    public Reply execute() {
+    public void execute() {
+
+    }
+
+    @Override
+    public String getResponseMessage() throws UnexpectedCodeException {
         return null;
     }
 

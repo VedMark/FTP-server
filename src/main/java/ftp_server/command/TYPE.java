@@ -13,7 +13,12 @@ public class TYPE implements Command {
     }
 
     @Override
-    public Reply execute() {
+    public void execute() {
+
+    }
+
+    @Override
+    public String getResponseMessage() throws UnexpectedCodeException {
         return null;
     }
 

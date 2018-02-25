@@ -1,17 +1,15 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.ConfigException;
 import ftp_server.server.FTPProperties;
 import ftp_server.server.FTPServerDTP;
-import ftp_server.server.FTPTransferParameters;
 
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 public class USER implements Command {
 
     private FTPServerDTP receiver;
+    private Reply reply = null;
     private String username;
 
     public USER(FTPServerDTP serverDTP, String username) {
@@ -20,21 +18,40 @@ public class USER implements Command {
     }
 
     @Override
-    public Reply execute() {
+    public void execute() {
         if(!isaValidString()) {
-            return new Reply(Reply.Code.CODE_501);
+            reply = new Reply(Reply.Code.CODE_501);
+        } else {
+            this.receiver.getParameters().setUsername(this.username);
+
+            try {
+                reply = FTPProperties.getPassword(this.username).isEmpty() ?
+                        new Reply(Reply.Code.CODE_230) :
+                        new Reply(Reply.Code.CODE_331);
+            } catch (MissingResourceException ignored) {
+                reply = new Reply(Reply.Code.CODE_331);
+            }
+        }
+    }
+
+    @Override
+    public String getResponseMessage() throws UnexpectedCodeException {
+        String message;
+        if(Reply.Code.CODE_230 == this.reply.getReplyCode()) {
+            message = this.reply.getMessage();
+        } else if(Reply.Code.CODE_331 == this.reply.getReplyCode()) {
+            message = getCode331FormattedString();
+        } else if(Reply.Code.CODE_501 == this.reply.getReplyCode()) {
+            message = this.reply.getMessage();
+        } else {
+            throw new UnexpectedCodeException();
         }
 
-        this.receiver.getParameters().setUsername(this.username);
+        return message;
+    }
 
-        try {
-            return FTPProperties.getPassword(this.username).isEmpty() ?
-                    new Reply(Reply.Code.CODE_230) :
-                    new Reply(Reply.Code.CODE_331);
-        }
-        catch (MissingResourceException ignored) {
-            return new Reply(Reply.Code.CODE_331);
-        }
+    private String getCode331FormattedString() {
+        return String.format(this.reply.getMessage(), this.receiver.getParameters().getUsername());
     }
 
     private boolean isaValidString() {

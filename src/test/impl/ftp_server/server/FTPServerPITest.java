@@ -68,8 +68,11 @@ class FTPServerPITest extends ApplicationTests {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
                     String message = reader.readLine();
-
                     assertEquals("220-----------Welcome to FTP-server----------", message);
+                    message = reader.readLine();
+                    assertEquals("220-You will be disconnected after 0 minutes of inactivity", message);
+                    message = reader.readLine();
+                    assertEquals("220 Service ready", message);
                 }
                 catch (Exception e) {
                     fail("Could not run client");

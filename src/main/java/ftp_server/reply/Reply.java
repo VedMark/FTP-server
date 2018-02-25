@@ -45,8 +45,8 @@ public class Reply {
         map.put(Code.CODE_226, "226 Closing data connection; file transfer successful\r\n");
         map.put(Code.CODE_227, "227 Entering Passive Mode(%d,%d,%d,%d,%d,%d)\r\n");
         map.put(Code.CODE_230, "230 User logged in, proceed\r\n");
-        map.put(Code.CODE_250, "250 Requested file action okay, completed\r\n");
-        map.put(Code.CODE_257, "257 %s created\r\n");
+        map.put(Code.CODE_250, "250 Requested file action okay\r\n");
+        map.put(Code.CODE_257, "257 Your current location is %s\r\n");
         map.put(Code.CODE_331, "331 User %s okay, need password\r\n");
         map.put(Code.CODE_332, "332 Need account for login\r\n");
         map.put(Code.CODE_350, "350 Requested file action pending further information\r\n");

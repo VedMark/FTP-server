@@ -5,6 +5,7 @@ import ftp_server.server.FTPServerDTP;
 
 public class DELE implements Command {
     private FTPServerDTP receiver;
+    Reply reply;
     private String pathname;
 
     public DELE(FTPServerDTP serverDTP, String pathname) {
@@ -13,7 +14,12 @@ public class DELE implements Command {
     }
 
     @Override
-    public Reply execute() {
+    public void execute() {
+
+    }
+
+    @Override
+    public String getResponseMessage() throws UnexpectedCodeException {
         return null;
     }
 

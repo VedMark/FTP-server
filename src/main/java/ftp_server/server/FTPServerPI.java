@@ -32,7 +32,12 @@ class FTPServerPI implements Runnable {
         this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-        sendMessage(getFormattedMessage(new Reply(Reply.Code.CODE_220)));
+        sendMessage(getCode220FormattedString(new Reply(Reply.Code.CODE_220)));
+    }
+
+    private String getCode220FormattedString(Reply reply) throws SocketException {
+        Integer res = this.socket.getSoTimeout() / (60 * 1000); // converting milliseconds to minutes
+        return String.format(reply.getMessage(), res, res == 1 ? "" : "s");
     }
 
     public void start() {
@@ -72,41 +77,13 @@ class FTPServerPI implements Runnable {
     private void listenToConnections() throws IOException {
         while (true) {
             Command request = receiveMessage();
-            Reply reply = request.execute();
-            sendMessage(this.getFormattedMessage(reply));
+            request.execute();
+            sendMessage(request.getResponseMessage());
 
             if(request instanceof QUIT) {
                 break;
             }
         }
-    }
-
-    private String getFormattedMessage(Reply reply) throws SocketException{
-        String result;
-
-        switch (reply.getReplyCode()) {
-            case CODE_215: result = getCode215FormattedString(reply); break;
-            case CODE_220: result = getCode220FormattedString(reply); break;
-            case CODE_331: result = getCode331FormattedString(reply); break;
-
-            default: result  = reply.getMessage();
-        }
-
-        return result;
-    }
-
-    private String getCode215FormattedString(Reply reply) {
-        String os = System.getProperty("os.name") + " " + System.getProperty("os.version");
-        return String.format(reply.getMessage(), os);
-    }
-
-    private String getCode220FormattedString(Reply reply) throws SocketException {
-        Integer res = this.socket.getSoTimeout() / (60 * 1000); // converting milliseconds to minutes
-        return String.format(reply.getMessage(), res, res == 1 ? "" : "s");
-    }
-
-    private String getCode331FormattedString(Reply reply) {
-        return String.format(reply.getMessage(), this.serverDTP.getParameters().getUsername());
     }
 
     private void sendMessage(String message) throws IOException {

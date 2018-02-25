@@ -5,6 +5,7 @@ import ftp_server.server.FTPServerDTP;
 
 public class MODE implements Command {
     private FTPServerDTP receiver;
+    Reply reply;
     private String mode_code;
 
     public MODE(FTPServerDTP serverDTP, String mode_code) {
@@ -13,7 +14,12 @@ public class MODE implements Command {
     }
 
     @Override
-    public Reply execute() {
+    public void execute() {
+
+    }
+
+    @Override
+    public String getResponseMessage() throws UnexpectedCodeException {
         return null;
     }
 

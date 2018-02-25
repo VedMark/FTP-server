@@ -5,6 +5,7 @@ import ftp_server.server.FTPServerDTP;
 
 public class ALLO implements Command {
     private FTPServerDTP receiver;
+    Reply reply;
     private String dec_int;
 
     public ALLO(FTPServerDTP serverDTP, String dec_int) {
@@ -13,7 +14,12 @@ public class ALLO implements Command {
     }
 
     @Override
-    public Reply execute() {
+    public void execute() {
+
+    }
+
+    @Override
+    public String getResponseMessage() throws UnexpectedCodeException {
         return null;
     }
 

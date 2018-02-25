@@ -8,13 +8,14 @@ public class FTPTransferParameters {
     private String username = "";
     private String password = "";
     private String home = "";
+    private String workingDirectory = "/";
     private Type type = DEFAULT_TYPE;
     private Mode mode = DEFAULT_MODE;
     private Structure structure = DEFAULT_STRUCTURE;
     private boolean authorized;
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setUsername(String username) {
@@ -22,7 +23,7 @@ public class FTPTransferParameters {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -30,7 +31,7 @@ public class FTPTransferParameters {
     }
 
     public String getHome() {
-        return home;
+        return this.home;
     }
 
     public void setHome(String home) {
@@ -38,7 +39,7 @@ public class FTPTransferParameters {
     }
 
     public Type getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(Type type) {
@@ -46,7 +47,7 @@ public class FTPTransferParameters {
     }
 
     public Mode getMode() {
-        return mode;
+        return this.mode;
     }
 
     public void setMode(Mode mode) {
@@ -54,7 +55,7 @@ public class FTPTransferParameters {
     }
 
     public Structure getStructure() {
-        return structure;
+        return this.structure;
     }
 
     public void setStructure(Structure structure) {
@@ -67,5 +68,13 @@ public class FTPTransferParameters {
 
     public void setAuthorized(boolean authorized) {
         this.authorized = authorized;
+    }
+
+    public String getWorkingDirectory() {
+        return this.workingDirectory;
+    }
+
+    public void setWorkingDirectory(String dir) {
+        this.workingDirectory = dir;
     }
 }

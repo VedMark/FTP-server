@@ -5,6 +5,7 @@ import ftp_server.server.FTPServerDTP;
 
 public class REST implements Command {
     private FTPServerDTP receiver;
+    Reply reply;
     private String marker;
 
     public REST(FTPServerDTP serverDTP, String marker) {
@@ -13,7 +14,12 @@ public class REST implements Command {
     }
 
     @Override
-    public Reply execute() {
+    public void execute() {
+
+    }
+
+    @Override
+    public String getResponseMessage() throws UnexpectedCodeException {
         return null;
     }
 

@@ -5,6 +5,7 @@ import ftp_server.server.FTPServerDTP;
 
 public class MKD implements Command {
     private FTPServerDTP receiver;
+    Reply reply;
     private String pathname;
 
     public MKD(FTPServerDTP serverDTP, String pathname) {
@@ -13,7 +14,12 @@ public class MKD implements Command {
     }
 
     @Override
-    public Reply execute() {
+    public void execute() {
+
+    }
+
+    @Override
+    public String getResponseMessage() throws UnexpectedCodeException {
         return null;
     }
 
