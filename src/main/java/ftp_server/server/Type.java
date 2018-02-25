@@ -1,5 +1,5 @@
 package ftp_server.server;
 
 public enum Type {
-    ASCII, BINARY, IMAGE, EBCIDIC, TENEX
+    ASCII, BINARY, IMAGE, EBCDIC, TENEX
 }

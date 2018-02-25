@@ -5,12 +5,11 @@ import ftp_server.command.Command;
 import ftp_server.command.QUIT;
 import ftp_server.reply.Reply;
 import ftp_server.view.View;
-
 import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.net.SocketException;
 
 class FTPServerPI implements Runnable {
     private static final Logger log = Logger.getLogger(Main.class.getName());
@@ -33,11 +32,7 @@ class FTPServerPI implements Runnable {
         this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-        Reply reply = new Reply(220, new ArrayList<>());
-        reply.appendMessageList("----------Welcome to FTP-server----------");
-        reply.appendMessageList("Service ready");
-
-        sendMessage(reply.getMessage());
+        sendMessage(getFormattedMessage(new Reply(Reply.Code.CODE_220)));
     }
 
     public void start() {
@@ -78,12 +73,40 @@ class FTPServerPI implements Runnable {
         while (true) {
             Command request = receiveMessage();
             Reply reply = request.execute();
-            sendMessage(reply.getMessage());
+            sendMessage(this.getFormattedMessage(reply));
 
             if(request instanceof QUIT) {
                 break;
             }
         }
+    }
+
+    private String getFormattedMessage(Reply reply) throws SocketException{
+        String result;
+
+        switch (reply.getReplyCode()) {
+            case CODE_215: result = getCode215FormattedString(reply); break;
+            case CODE_220: result = getCode220FormattedString(reply); break;
+            case CODE_331: result = getCode331FormattedString(reply); break;
+
+            default: result  = reply.getMessage();
+        }
+
+        return result;
+    }
+
+    private String getCode215FormattedString(Reply reply) {
+        String os = System.getProperty("os.name") + " " + System.getProperty("os.version");
+        return String.format(reply.getMessage(), os);
+    }
+
+    private String getCode220FormattedString(Reply reply) throws SocketException {
+        Integer res = this.socket.getSoTimeout() / (60 * 1000); // converting milliseconds to minutes
+        return String.format(reply.getMessage(), res, res == 1 ? "" : "s");
+    }
+
+    private String getCode331FormattedString(Reply reply) {
+        return String.format(reply.getMessage(), this.serverDTP.getParameters().getUsername());
     }
 
     private void sendMessage(String message) throws IOException {
@@ -94,14 +117,8 @@ class FTPServerPI implements Runnable {
 
     private Command receiveMessage() throws IOException {
         String message = reader.readLine();
-        Command request = null;
-        try {
-            request = cmdController.createCommand(message);
-        } catch (SyntaxErrorException exception) {
-            this.sendMessage(exception.getMessage());
-        }
-        this.updateDialog(message);
-        return request;
+        this.updateDialog(message + "\n");
+        return cmdController.createCommand(message);
     }
 
     private void updateDialog(String info) {

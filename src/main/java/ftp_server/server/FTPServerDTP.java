@@ -1,7 +1,11 @@
 package ftp_server.server;
 
 public class FTPServerDTP {
-    FTPTransferParameters parameters;
+    private FTPTransferParameters parameters;
+
+    public FTPServerDTP() {
+        parameters = new FTPTransferParameters();
+    }
 
     public void sendData() {
 //        ByteBuffer buffer = ByteBuffer.wrap((message + "\n").getBytes(CHAR_ENCODING));
@@ -9,7 +13,7 @@ public class FTPServerDTP {
 //        }
     }
 
-    public void serialize() {
-
+    public FTPTransferParameters getParameters() {
+        return parameters;
     }
 }

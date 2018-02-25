@@ -7,33 +7,27 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ResourceBundle;
 
 public class FTPServer {
-    private static final String CONFIG_FILE = "config";
 
     private ServerSocket socket;
     private View view;
 
     public FTPServer() throws IOException, ConfigException {
-        FTPProperties ftpProperties = getFtpProperties(CONFIG_FILE);
-        this.socket = getPiSocket(ftpProperties.getPortPI(), ftpProperties.getCapacity());
+        this.socket = getPiSocket(FTPProperties.getPortPI(), FTPProperties.getCapacity());
     }
 
-    private FTPProperties getFtpProperties(String configFile) {
-        return new FTPProperties(ResourceBundle.getBundle(configFile));
-    }
-
-    private ServerSocket getPiSocket(Integer port, Integer maxUsers) throws IOException {
+    private ServerSocket getPiSocket(Short port, Integer maxUsers) throws IOException {
         ServerSocket serverSocket = ServerSocketFactory.getDefault().createServerSocket();
         serverSocket.bind(new InetSocketAddress(port));
         serverSocket.setReceiveBufferSize(maxUsers);
         return serverSocket;
     }
 
-    public void run() throws IOException {
+    public void run() throws IOException, ConfigException {
         while(true) {
             Socket socket = this.socket.accept();
+            socket.setSoTimeout(FTPProperties.getTimeout());
 
             FTPServerPI pi = new FTPServerPI(socket, this.view);
             pi.start();

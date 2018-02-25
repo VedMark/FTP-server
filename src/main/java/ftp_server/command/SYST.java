@@ -4,15 +4,13 @@ import ftp_server.reply.Reply;
 import ftp_server.server.FTPServerDTP;
 
 public class SYST implements Command {
-    private FTPServerDTP receiver;
 
-    public SYST(FTPServerDTP serverDTP) {
-        this.receiver = serverDTP;
+    public SYST() {
     }
 
     @Override
     public Reply execute() {
-        return null;
+        return new Reply(Reply.Code.CODE_215);
     }
 
 }

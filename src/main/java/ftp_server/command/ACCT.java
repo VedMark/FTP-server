@@ -14,7 +14,7 @@ public class ACCT implements Command {
 
     @Override
     public Reply execute() {
-        return null;
+        return new Reply(Reply.Code.CODE_202);
     }
 
 }

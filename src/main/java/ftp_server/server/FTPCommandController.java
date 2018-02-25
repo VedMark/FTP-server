@@ -9,7 +9,7 @@ class FTPCommandController {
         this.serverDTP = serverDTP;
     }
 
-    public Command createCommand(String message) throws SyntaxErrorException {
+    public Command createCommand(String message) {
         String cmd;
         String param = null;
         if(message.indexOf(' ') != -1) {
@@ -24,7 +24,7 @@ class FTPCommandController {
         return newCommand(cmd, param);
     }
 
-    private Command newCommand(String cmd, String param) throws SyntaxErrorException {
+    private Command newCommand(String cmd, String param) {
         Command command;
 
         switch(CommandEnum.valueOf(cmd)) {
@@ -57,12 +57,12 @@ class FTPCommandController {
             case LIST:  command = new LIST(this.serverDTP, param);  break;
             case NLST:  command = new NLST(this.serverDTP, param);  break;
             case SITE:  command = new SITE(this.serverDTP, param);  break;
-            case SYST:  command = new SYST(this.serverDTP);         break;
+            case SYST:  command = new SYST();         break;
             case STAT:  command = new STAT(this.serverDTP, param);  break;
             case HELP:  command = new HELP(this.serverDTP, param);  break;
             case NOOP:  command = new NOOP(this.serverDTP);         break;
 
-            default: throw new SyntaxErrorException();
+            default:    command = new BadCommand();
         }
 
         return command;
