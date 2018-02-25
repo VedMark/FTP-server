@@ -5,6 +5,7 @@ import ftp_server.server.FTPProperties;
 import ftp_server.server.FTPServerDTP;
 
 public class PASS implements Command {
+    private static final String AUTHENTICATION_FAILED_MESSAGE = "Login authentication failed";
     private FTPServerDTP receiver;
     Reply reply;
     private String password;
@@ -37,12 +38,16 @@ public class PASS implements Command {
         } else if(Reply.Code.CODE_503 == this.reply.getReplyCode()) {
             message = this.reply.getMessage();
         } else if(Reply.Code.CODE_530 == this.reply.getReplyCode()) {
-            message = this.reply.getMessage();
+            message = this.getCode530FormattedString();
         } else {
             throw new UnexpectedCodeException();
         }
 
         return message;
+    }
+
+    private String getCode530FormattedString() {
+        return String.format(this.reply.getMessage(),AUTHENTICATION_FAILED_MESSAGE);
     }
 
     private Boolean verifyAccount() {

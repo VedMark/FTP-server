@@ -41,9 +41,9 @@ CLASSES = \
         src/main/java/ftp_server/command/STRU.java \
         src/main/java/ftp_server/command/SYST.java \
         src/main/java/ftp_server/command/TYPE.java \
+	src/main/java/ftp_server/command/UnexpectedCodeException.java \
         src/main/java/ftp_server/command/USER.java \
         src/main/java/ftp_server/reply/Reply.java \
-        src/main/java/ftp_server/server/CommandType.java \
         src/main/java/ftp_server/server/ConfigException.java \
         src/main/java/ftp_server/server/FTPCommandController.java \
         src/main/java/ftp_server/server/FTPProperties.java \

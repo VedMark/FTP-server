@@ -15,12 +15,18 @@ public class APPE implements Command {
 
     @Override
     public void execute() {
-
+        reply = new Reply(Reply.Code.CODE_502);
     }
 
     @Override
     public String getResponseMessage() throws UnexpectedCodeException {
-        return null;
-    }
+        String message;
+        if(Reply.Code.CODE_502 == this.reply.getReplyCode()) {
+            message = this.reply.getMessage();
+        } else {
+            throw new UnexpectedCodeException();
+        }
 
+        return message;
+    }
 }

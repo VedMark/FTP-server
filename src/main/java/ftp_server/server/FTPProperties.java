@@ -1,7 +1,5 @@
 package ftp_server.server;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -67,7 +65,6 @@ public class FTPProperties {
         return bundle.getString("ftp.user." + user);
     }
 
-    @NotNull
     private static Long convertValue(String number, String wrongPortMessage, Long minValue, Long maxValue) throws ConfigException {
         Long value;
         try {

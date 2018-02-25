@@ -61,7 +61,7 @@ public class Reply {
         map.put(Code.CODE_502, "502 Command not implemented\r\n");
         map.put(Code.CODE_503, "503 Bad sequence of commands\r\n");
         map.put(Code.CODE_504, "504 Command not implemented for that parameter\r\n");
-        map.put(Code.CODE_530, "530 Not logged in\r\n");
+        map.put(Code.CODE_530, "530 %s\r\n");
         map.put(Code.CODE_532, "532 Need account for storing files\r\n");
         map.put(Code.CODE_550, "550 Requested action not taken, %s\r\n");
         map.put(Code.CODE_551, "551 Requested action aborted: page type unknown\r\n");

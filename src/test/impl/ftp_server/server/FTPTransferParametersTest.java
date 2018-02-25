@@ -1,11 +1,17 @@
 package ftp_server.server;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FTPTransferParametersTest {
-    private FTPTransferParameters parameters = new FTPTransferParameters();
+    private FTPTransferParameters parameters;
+
+    @BeforeEach
+    void initFTPTransferParameters() {
+        parameters = new FTPTransferParameters();
+    }
 
     @Test
     void getUsername() {
@@ -88,5 +94,30 @@ class FTPTransferParametersTest {
     void setAuthorized() {
         parameters.setAuthorized(true);
         assertEquals(true, parameters.isAuthorized());
+    }
+
+    @Test
+    void getWorkingDir() {
+        assertEquals("/", parameters.getWorkingDir());
+    }
+
+    @Test
+    void setWorkingDir() {
+        final String string = "/home/root";
+        parameters.setWorkingDir(string);
+        assertEquals(string, parameters.getWorkingDir());
+    }
+
+    @Test
+    void reset() {
+        parameters.reset();
+        assertEquals("", parameters.getUsername());
+        assertEquals("", parameters.getPassword());
+        assertEquals("", parameters.getHome());
+        assertEquals("/", parameters.getWorkingDir());
+        assertEquals(Type.ASCII, parameters.getType());
+        assertEquals(Mode.Stream, parameters.getMode());
+        assertEquals(Structure.FILE, parameters.getStructure());
+        assertEquals(false, parameters.isAuthorized());
     }
 }

@@ -19,18 +19,28 @@ public class USER implements Command {
 
     @Override
     public void execute() {
-        if(!isaValidString()) {
+        if(this.receiver.getParameters().isAuthorized()) {
+            reply = new Reply(Reply.Code.CODE_530);
+        } else if(!isaValidString()) {
             reply = new Reply(Reply.Code.CODE_501);
         } else {
             this.receiver.getParameters().setUsername(this.username);
 
             try {
-                reply = FTPProperties.getPassword(this.username).isEmpty() ?
-                        new Reply(Reply.Code.CODE_230) :
-                        new Reply(Reply.Code.CODE_331);
+                checkIfNoPasswordForUser();
             } catch (MissingResourceException ignored) {
                 reply = new Reply(Reply.Code.CODE_331);
             }
+        }
+    }
+
+    private void checkIfNoPasswordForUser() {
+        if (FTPProperties.getPassword(this.username).isEmpty()) {
+            reply = new Reply(Reply.Code.CODE_230);
+            this.receiver.getParameters().setAuthorized(true);
+            this.receiver.getParameters().setHome(FTPProperties.getHome(this.receiver.getParameters().getUsername()));
+        } else {
+            reply = new Reply(Reply.Code.CODE_331);
         }
     }
 
@@ -43,6 +53,8 @@ public class USER implements Command {
             message = getCode331FormattedString();
         } else if(Reply.Code.CODE_501 == this.reply.getReplyCode()) {
             message = this.reply.getMessage();
+        } else if(Reply.Code.CODE_530 == this.reply.getReplyCode()) {
+            message = getCode530FormattedString();
         } else {
             throw new UnexpectedCodeException();
         }
@@ -52,6 +64,10 @@ public class USER implements Command {
 
     private String getCode331FormattedString() {
         return String.format(this.reply.getMessage(), this.receiver.getParameters().getUsername());
+    }
+
+    private String getCode530FormattedString() {
+        return String.format(this.reply.getMessage(), "You are already logged in");
     }
 
     private boolean isaValidString() {

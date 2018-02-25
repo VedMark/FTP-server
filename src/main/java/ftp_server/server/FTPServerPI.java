@@ -36,13 +36,19 @@ class FTPServerPI implements Runnable {
     }
 
     private String getCode220FormattedString(Reply reply) throws SocketException {
-        Integer res = this.socket.getSoTimeout() / (60 * 1000); // converting milliseconds to minutes
+        Integer res; // converting milliseconds to minutes
+        try {
+            res = FTPProperties.getTimeout() / (60 * 1000);
+        } catch (ConfigException e) {
+            res = 0;
+        }
+
         return String.format(reply.getMessage(), res, res == 1 ? "" : "s");
     }
 
     public void start() {
         if(this.thread == null) {
-            this.thread = new Thread(this);
+            this.thread = new Thread(this, "Thread for " + this.socket.getInetAddress() + " " + this.socket.getPort());
             this.thread.start();
         }
     }
@@ -94,8 +100,12 @@ class FTPServerPI implements Runnable {
 
     private Command receiveMessage() throws IOException {
         String message = reader.readLine();
-        this.updateDialog(message + "\n");
-        return cmdController.createCommand(message);
+        if(message != null) {
+            this.updateDialog(message + "\n");
+            return cmdController.createCommand(message);
+        } else {
+            throw new SocketException("Connection unexpectedly closed by remote socket");
+        }
     }
 
     private void updateDialog(String info) {

@@ -30,6 +30,6 @@ public class PWD implements Command {
     }
 
     private String getCode257FormattedString() {
-        return String.format(this.reply.getMessage(), this.receiver.getParameters().getWorkingDirectory());
+        return String.format(this.reply.getMessage(), this.receiver.getParameters().getWorkingDir());
     }
 }
