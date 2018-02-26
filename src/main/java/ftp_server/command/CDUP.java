@@ -2,6 +2,7 @@ package ftp_server.command;
 
 import ftp_server.reply.Reply;
 import ftp_server.server.FTPServerDTP;
+import ftp_server.utils.FileSystem;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,32 +18,12 @@ public class CDUP implements Command {
     @Override
     public void execute() {
         if(this.receiver.getParameters().isAuthorized()) {
-            String home = this.receiver.getParameters().getHome();
-            String workingDir = this.receiver.getParameters().getWorkingDir();
-
-            String prevDir = getCanonicalPath(new File(home + workingDir, ".."));
-
-            if(prevDir.length() < receiver.getParameters().getHome().length()) {
-                prevDir =  receiver.getParameters().getHome();
-            }
-
-            String newDir = prevDir.substring(receiver.getParameters().getHome().length());
-            receiver.getParameters().setWorkingDir(newDir.isEmpty() ? "/" : newDir);
+            receiver.getParameters().setWorkingDir(FileSystem.normalizePath(receiver.getParameters().getHome(), ".."));
             reply = new Reply(Reply.Code.CODE_200);
 
         } else {
             reply = new Reply(Reply.Code.CODE_530);
         }
-    }
-
-    private String getCanonicalPath(File f) {
-        String prevDir;
-        try {
-            prevDir = f.getCanonicalPath();
-        } catch (IOException e) {
-            prevDir = f.getAbsolutePath();
-        }
-        return prevDir;
     }
 
     @Override

@@ -1,0 +1,71 @@
+package ftp_server.utils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+public class FileSystem {
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd HH:mm", Locale.ENGLISH);
+
+    public static String normalizePath(String homename, String pathname) {
+        String answer;
+
+        Path path = Paths.get(isAbsolutePathname(pathname) ? pathname : homename + "/" + pathname);
+
+        if (isValidDirectoryName(path)) {
+            String normPathname = path.normalize().toString();
+
+            answer = normPathname.startsWith(homename) ? normPathname.substring(homename.length()) + "/" : "/";
+        } else {
+            answer = null;
+        }
+
+        return answer;
+    }
+
+    private static boolean isAbsolutePathname(String pathname) {
+        return !pathname.isEmpty() && '/' == pathname.charAt(0);
+    }
+
+    private static boolean isValidDirectoryName(Path path) {
+        final File file = path.toFile();
+        return file.exists() && file.isDirectory();
+    }
+
+    public static String fileInfo(String pathname) {
+        File file = new File(pathname);
+        String owner;
+        try {
+            owner = Files.getOwner(file.toPath()).toString();
+        } catch (IOException e) {
+            owner = "";
+        }
+        StringBuilder builder = new StringBuilder();
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(file.lastModified());
+
+        builder.append(file.isDirectory() ? "d" : "-")
+                .append(file.canRead() ? 'r' : '-')
+                .append(file.canWrite() ? 'w' : '-')
+                .append(file.canExecute() ? 'x' : '-')
+                .append(' ')
+                .append(String.format("%3d", 1)).append(' ')
+                .append(String.format("%-8s", owner))
+                .append(' ')
+                .append(String.format("%-8s", owner))
+                .append(' ')
+                .append(String.format("%8d", file.length()))
+                .append(' ')
+                .append(DATE_FORMAT.format(cal.getTime()))
+                .append(' ')
+                .append(file.getName());
+
+        return builder.toString();
+    }
+}

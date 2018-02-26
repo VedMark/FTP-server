@@ -8,10 +8,24 @@ import static org.junit.jupiter.api.Assertions.*;
 class STOUTest {
 
     @Test
-    void execute_Code502() throws UnexpectedCodeException {
+    void execute_Code530() throws UnexpectedCodeException {
         STOU stou = new STOU(new FTPServerDTP());
         stou.execute();
         String response = stou.getResponseMessage();
-        assertEquals("502 Command not implemented\r\n", response);
+        assertEquals("530 You are not logged in\r\n", response);
+    }
+
+    @Test
+    void execute_Code202() throws UnexpectedCodeException {
+        FTPServerDTP serverDTP = new FTPServerDTP();
+        USER user = new USER(serverDTP, "admin");
+        PASS pass = new PASS(serverDTP, "admin");
+        user.execute();
+        pass.execute();
+
+        STOU stou = new STOU(serverDTP);
+        stou.execute();
+        String response = stou.getResponseMessage();
+        assertEquals("202 Command not implemented, superfluous at this site\r\n", response);
     }
 }

@@ -3,7 +3,9 @@ package ftp_server.server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.net.InetSocketAddress;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class FTPTransferParametersTest {
     private FTPTransferParameters parameters;
@@ -50,6 +52,35 @@ class FTPTransferParametersTest {
     }
 
     @Test
+    void getWorkingDir() {
+        assertEquals("/", parameters.getWorkingDir());
+    }
+
+    @Test
+    void setWorkingDir() {
+        final String string = "/home/root";
+        parameters.setWorkingDir(string);
+        assertEquals(string, parameters.getWorkingDir());
+    }
+
+    @Test
+    void getUserAddress() {
+        assertNull(parameters.getUserAddress());
+    }
+
+    @Test
+    void toActiveProcess() {
+        final InetSocketAddress address = InetSocketAddress.createUnresolved("127.0.0.1", 8000);
+        parameters.toActiveProcess(address);
+        assertNotNull(parameters.getUserAddress());
+    }
+
+    @Test
+    void isActiveProcess() {
+        assertFalse(parameters.isActiveProcess());
+    }
+
+    @Test
     void getType() {
         assertEquals(Type.ASCII, parameters.getType());
     }
@@ -71,6 +102,18 @@ class FTPTransferParametersTest {
         final Mode mode = Mode.Block;
         parameters.setMode(mode);
         assertEquals(mode, parameters.getMode());
+    }
+
+    @Test
+    void getForm() {
+        assertEquals(Form.NON_PRINT, parameters.getForm());
+    }
+
+    @Test
+    void setForm() {
+        final Form form = Form.NON_PRINT;
+        parameters.setForm(form);
+        assertEquals(form, parameters.getForm());
     }
 
     @Test
@@ -97,26 +140,16 @@ class FTPTransferParametersTest {
     }
 
     @Test
-    void getWorkingDir() {
-        assertEquals("/", parameters.getWorkingDir());
-    }
-
-    @Test
-    void setWorkingDir() {
-        final String string = "/home/root";
-        parameters.setWorkingDir(string);
-        assertEquals(string, parameters.getWorkingDir());
-    }
-
-    @Test
     void reset() {
         parameters.reset();
         assertEquals("", parameters.getUsername());
         assertEquals("", parameters.getPassword());
         assertEquals("", parameters.getHome());
         assertEquals("/", parameters.getWorkingDir());
+        assertNull(parameters.getUserAddress());
         assertEquals(Type.ASCII, parameters.getType());
         assertEquals(Mode.Stream, parameters.getMode());
+        assertEquals(Form.NON_PRINT, parameters.getForm());
         assertEquals(Structure.FILE, parameters.getStructure());
         assertEquals(false, parameters.isAuthorized());
     }

@@ -60,7 +60,7 @@ class FTPCommandController {
             case "SYST":  command = new SYST();                         break;
             case "STAT":  command = new STAT(this.serverDTP, param);    break;
             case "HELP":  command = new HELP(this.serverDTP, param);    break;
-            case "NOOP":  command = new NOOP(this.serverDTP);           break;
+            case "NOOP":  command = new NOOP();           break;
 
             default:    command = new BadCommand();
         }

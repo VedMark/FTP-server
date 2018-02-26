@@ -9,7 +9,7 @@ import java.io.File;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CDUPTest {
-    FTPServerDTP serverDTP;
+    private FTPServerDTP serverDTP;
 
     @BeforeEach
     void initAccount() {

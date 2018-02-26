@@ -35,7 +35,7 @@ class FTPServerPI implements Runnable {
         sendMessage(getCode220FormattedString(new Reply(Reply.Code.CODE_220)));
     }
 
-    private String getCode220FormattedString(Reply reply) throws SocketException {
+    private String getCode220FormattedString(Reply reply) {
         Integer res; // converting milliseconds to minutes
         try {
             res = FTPProperties.getTimeout() / (60 * 1000);
@@ -75,6 +75,7 @@ class FTPServerPI implements Runnable {
             listenToConnections();
         }
         catch (IOException exception) {
+            this.stop();
             log.error(exception.getMessage());
         }
         this.stop();

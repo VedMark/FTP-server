@@ -2,10 +2,9 @@ package ftp_server.command;
 
 import ftp_server.reply.Reply;
 import ftp_server.server.FTPServerDTP;
+import ftp_server.utils.FileSystem;
 
 import java.io.File;
-import java.io.IOException;
-
 public class CWD implements Command {
     private static final String NO_SUCH_DIR_MESSAGE = "no such directory";
 
@@ -21,54 +20,17 @@ public class CWD implements Command {
     @Override
     public void execute() {
         if(this.receiver.getParameters().isAuthorized()) {
-            String dir = processPath(pathname);
+            String dir = FileSystem.normalizePath(receiver.getParameters().getHome(), pathname);
 
-            if(dir != null && dir.startsWith(receiver.getParameters().getHome())) {
-                    String newDir = dir.substring(receiver.getParameters().getHome().length()) + "/";
-                    receiver.getParameters().setWorkingDir(newDir);
-                    reply = new Reply(Reply.Code.CODE_250);
+            if(dir != null) {
+                receiver.getParameters().setWorkingDir(dir);
+                reply = new Reply(Reply.Code.CODE_250);
             } else {
                 reply = new Reply(Reply.Code.CODE_550);
             }
         } else {
             reply = new Reply(Reply.Code.CODE_530);
         }
-    }
-
-    private String processPath(String pathname) {
-        File tmpFile = getFile(pathname);
-
-        try {
-            tmpFile = new File(tmpFile.getCanonicalPath());
-        } catch (IOException e) {
-            tmpFile = new File(tmpFile.getAbsolutePath());
-        }
-
-        if(!isValidDirectoryName(tmpFile)) {
-            return null;
-        }
-        if(tmpFile.getAbsolutePath().length() < receiver.getParameters().getHome().length()) {
-            return receiver.getParameters().getHome();
-        }
-
-        return tmpFile.getAbsolutePath();
-    }
-
-    private File getFile(String pathname) {
-        String home = this.receiver.getParameters().getHome();
-        String workingDir = this.receiver.getParameters().getWorkingDir();
-
-        return isAbsolutePath(pathname) ?
-                new File(home, pathname.substring(1)) :
-                new File(home + workingDir, pathname);
-    }
-
-    private boolean isAbsolutePath(String pathname) {
-        return !pathname.isEmpty() && '/' == pathname.charAt(0);
-    }
-
-    private boolean isValidDirectoryName(File dir) {
-        return dir.exists() && dir.isDirectory();
     }
 
     @Override

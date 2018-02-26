@@ -35,6 +35,6 @@ class PASSTest {
         user.execute();
         pass.execute();
         String response = pass.getResponseMessage();
-        assertEquals("530 Not logged in\r\n", response);
+        assertEquals("530 Login authentication failed\r\n", response);
     }
 }

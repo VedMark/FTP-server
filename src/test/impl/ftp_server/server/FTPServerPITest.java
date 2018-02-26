@@ -23,22 +23,8 @@ class FTPServerPITest extends ApplicationTests {
         Socket s = server.accept();
 
         this.serverPI = new FTPServerPI(s, new LogComponent());
-        stopServerAfter(5000);
         this.serverPI.start();
-    }
-
-    @Test
-    void stop() throws IOException {
-        runSimpleClient();
-
-        server = new ServerSocket(8000, 0, InetAddress.getByName(null));
-        Socket s = server.accept();
-
-        this.serverPI = new FTPServerPI(s, new LogComponent());
-        stopServerAfter(2000);
-        this.serverPI.start();
-
-        this.serverPI.stop();
+        stopServerAfter(500);
     }
 
     private void runSimpleClient() {
@@ -46,23 +32,7 @@ class FTPServerPITest extends ApplicationTests {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(1000);
-                    client = new Socket(InetAddress.getByName(null).getHostAddress(), 8000);
-                }
-                catch (Exception e) {
-                    fail("Could not run client");
-                }
-            }
-        }.start();
-    }
-
-    @Test
-    void run() throws Exception {
-        Thread t = new Thread("Test Client") {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                     client = new Socket(InetAddress.getByName(null).getHostAddress(), 8000);
 
                     BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -70,7 +40,7 @@ class FTPServerPITest extends ApplicationTests {
                     String message = reader.readLine();
                     assertEquals("220-----------Welcome to FTP-server----------", message);
                     message = reader.readLine();
-                    assertEquals("220-You will be disconnected after 0 minutes of inactivity", message);
+                    assertEquals("220-You will be disconnected after 10 minutes of inactivity", message);
                     message = reader.readLine();
                     assertEquals("220 Service ready", message);
                 }
@@ -78,17 +48,7 @@ class FTPServerPITest extends ApplicationTests {
                     fail("Could not run client");
                 }
             }
-        };
-        t.start();
-
-        server = new ServerSocket(8000, 0, InetAddress.getByName(null));
-        Socket s = server.accept();
-
-        this.serverPI = new FTPServerPI(s, new LogComponent());
-
-        stopServerAfter(2000);
-
-        this.serverPI.run();
+        }.start();
     }
 
     private void stopServerAfter(Integer ms) {

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FTPCommandControllerTest extends ApplicationTests {
-    FTPCommandController controller = new FTPCommandController(new FTPServerDTP());
+    private FTPCommandController controller = new FTPCommandController(new FTPServerDTP());
 
     @Test
     void createCommand_USER() {

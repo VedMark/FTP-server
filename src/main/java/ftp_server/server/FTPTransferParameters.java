@@ -1,19 +1,25 @@
 package ftp_server.server;
 
+import java.net.InetSocketAddress;
+
 public class FTPTransferParameters {
+
     private static final String     DEFAULT_WORKING_DIR = "/";
     private static final Type       DEFAULT_TYPE        = Type.ASCII;
     private static final Mode       DEFAULT_MODE        = Mode.Stream;
+    private static final Form       DEFAULT_FORM        = Form.NON_PRINT;
     private static final Structure  DEFAULT_STRUCTURE   = Structure.FILE;
 
-    private String      username    = "";
-    private String      password    = "";
-    private String      home        = "";
-    private String      workingDir  = DEFAULT_WORKING_DIR;
-    private Type        type        = DEFAULT_TYPE;
-    private Mode        mode        = DEFAULT_MODE;
-    private Structure   structure   = DEFAULT_STRUCTURE;
-    private boolean     authorized;
+    private String              username    = "";
+    private String              password    = "";
+    private String              home        = "";
+    private String              workingDir  = DEFAULT_WORKING_DIR;
+    private InetSocketAddress   userAddress = null;
+    private Type                type        = DEFAULT_TYPE;
+    private Mode                mode        = DEFAULT_MODE;
+    private Form                form        = DEFAULT_FORM;
+    private Structure           structure   = DEFAULT_STRUCTURE;
+    private Boolean             authorized  = false;
 
     public String getUsername() {
         return this.username;
@@ -39,6 +45,26 @@ public class FTPTransferParameters {
         this.home = home.endsWith(DEFAULT_WORKING_DIR) ? home.substring(home.length() - 1) : home;
     }
 
+    public String getWorkingDir() {
+        return this.workingDir;
+    }
+
+    public void setWorkingDir(String dir) {
+        this.workingDir = dir;
+    }
+
+    public InetSocketAddress getUserAddress() {
+        return this.userAddress;
+    }
+
+    public void toActiveProcess(InetSocketAddress address) {
+        this.userAddress = address;
+    }
+
+    public Boolean isActiveProcess() {
+        return this.userAddress != null;
+    }
+
     public Type getType() {
         return this.type;
     }
@@ -55,6 +81,14 @@ public class FTPTransferParameters {
         this.mode = mode;
     }
 
+    public Form getForm() {
+        return form;
+    }
+
+    public void setForm(Form form) {
+        this.form = form;
+    }
+
     public Structure getStructure() {
         return this.structure;
     }
@@ -67,26 +101,20 @@ public class FTPTransferParameters {
         return this.authorized;
     }
 
-    public void setAuthorized(boolean authorized) {
+    public void setAuthorized(Boolean authorized) {
         this.authorized = authorized;
     }
 
-    public String getWorkingDir() {
-        return this.workingDir;
-    }
-
-    public void setWorkingDir(String dir) {
-        this.workingDir = dir;
-    }
-
     public void reset() {
-        username = "";
-        password = "";
-        home = "";
-        workingDir = DEFAULT_WORKING_DIR;
-        type = DEFAULT_TYPE;
-        mode = DEFAULT_MODE;
-        structure = DEFAULT_STRUCTURE;
-        authorized = false;
+        this.username = "";
+        this.password = "";
+        this.home = "";
+        this.workingDir = DEFAULT_WORKING_DIR;
+        this.userAddress = null;
+        this.type = DEFAULT_TYPE;
+        this.mode = DEFAULT_MODE;
+        this.form = DEFAULT_FORM;
+        this.structure = DEFAULT_STRUCTURE;
+        this.authorized = false;
     }
 }
