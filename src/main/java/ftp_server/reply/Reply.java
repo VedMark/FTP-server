@@ -32,7 +32,7 @@ public class Reply {
         map.put(Code.CODE_200, "200 Command okay, %s\r\n");
         map.put(Code.CODE_202, "202 Command not implemented, superfluous at this site\r\n");
         map.put(Code.CODE_211, "211 %s\r\n");
-        map.put(Code.CODE_212, "212 %s\r\n");
+        map.put(Code.CODE_212, "212-%s212\r\n");
         map.put(Code.CODE_213, "213 %s\r\n");
         map.put(Code.CODE_214, "214 %s\r\n");
         map.put(Code.CODE_215, "215 %s\r\n");

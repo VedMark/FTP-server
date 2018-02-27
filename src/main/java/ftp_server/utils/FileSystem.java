@@ -74,4 +74,73 @@ public class FileSystem {
 
         return builder.toString();
     }
+
+    public static String dirInfo(String homepath, String pathname) {
+        StringBuilder builder = new StringBuilder();
+
+        File file = new File(pathname);
+        String owner;
+        try {
+            owner = Files.getOwner(file.toPath()).toString();
+        } catch (IOException e) {
+            owner = "";
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(file.lastModified());
+
+        builder.append(file.isDirectory() ? "d" : "-")
+                .append(file.canRead() ? 'r' : '-')
+                .append(file.canWrite() ? 'w' : '-')
+                .append(file.canExecute() ? 'x' : '-')
+                .append(' ')
+                .append(String.format("%3d", 1)).append(' ')
+                .append(String.format("%-8s", owner))
+                .append(' ')
+                .append(String.format("%-8s", owner))
+                .append(' ')
+                .append(String.format("%8d", file.length()))
+                .append(' ')
+                .append(DATE_FORMAT.format(cal.getTime()))
+                .append(' ')
+                .append('.')
+                .append("\n");
+
+        String parent = file.getParent();
+        if(parent.startsWith(homepath)) {
+            file = new File(parent);
+        }
+
+        try {
+            owner = Files.getOwner(file.toPath()).toString();
+        } catch (IOException e) {
+            owner = "";
+        }
+        cal.setTimeInMillis(file.lastModified());
+
+        builder.append(file.isDirectory() ? "d" : "-")
+                .append(file.canRead() ? 'r' : '-')
+                .append(file.canWrite() ? 'w' : '-')
+                .append(file.canExecute() ? 'x' : '-')
+                .append(' ')
+                .append(String.format("%3d", 1)).append(' ')
+                .append(String.format("%-8s", owner))
+                .append(' ')
+                .append(String.format("%-8s", owner))
+                .append(' ')
+                .append(String.format("%8d", file.length()))
+                .append(' ')
+                .append(DATE_FORMAT.format(cal.getTime()))
+                .append(' ')
+                .append("..")
+                .append("\n");
+
+        String[] files = new File(pathname).list();
+        if (files != null) {
+            for(String f : files) {
+                builder.append(FileSystem.fileInfo(pathname + "/" + f))
+                        .append("\n");
+            }
+        }
+        return builder.toString();
+    }
 }

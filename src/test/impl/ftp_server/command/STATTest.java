@@ -75,20 +75,27 @@ class STATTest {
     }
 
     @Test
-    void execute_DirStat_Code212() throws UnexpectedCodeException {
+    void execute_DirStat_Code212() throws IOException {
         if(!file.mkdir()) {
             fail("Could not create file");
         }
 
+        File file1 = new File(file.getCanonicalPath() + "/file");
+        file1.createNewFile();
+
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(file.lastModified());
+        String str1 = "drwx   1 mark     mark         4096 " + DATE_FORMAT.format(cal.getTime()) + " .\n";
+        String str2 = "drwx   1 mark     mark         4096 " + DATE_FORMAT.format(cal.getTime()) + " ..\n";
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTimeInMillis(file1.lastModified());
+        String str3 = "-rw-   1 mark     mark            0 " + DATE_FORMAT.format(cal1.getTime()) + " file\n";
 
         STAT stat = new STAT(serverDTP, "ftp");
         stat.execute();
         String response = stat.getResponseMessage();
-        assertEquals("212 drwx   1 mark     mark         4096 "
-                + DATE_FORMAT.format(cal.getTime())
-                + " ftp\r\n", response);
+        file1.delete();
+        assertEquals("212-" + str1 + str2 + str3 + "212\r\n", response);
     }
 
     @Test

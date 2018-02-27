@@ -74,7 +74,7 @@ public class STAT implements Command {
     }
 
     private String getCode212FormattedString() {
-        return String.format(this.reply.getMessage(), FileSystem.fileInfo(pathname));
+        return String.format(this.reply.getMessage(), FileSystem.dirInfo(receiver.getParameters().getHome(), pathname));
     }
 
     private String getCode213FormattedString() {
