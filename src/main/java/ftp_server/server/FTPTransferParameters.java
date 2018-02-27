@@ -10,16 +10,18 @@ public class FTPTransferParameters {
     private static final Form       DEFAULT_FORM        = Form.NON_PRINT;
     private static final Structure  DEFAULT_STRUCTURE   = Structure.FILE;
 
-    private String              username    = "";
-    private String              password    = "";
-    private String              home        = "";
-    private String              workingDir  = DEFAULT_WORKING_DIR;
-    private InetSocketAddress   userAddress = null;
-    private Type                type        = DEFAULT_TYPE;
-    private Mode                mode        = DEFAULT_MODE;
-    private Form                form        = DEFAULT_FORM;
-    private Structure           structure   = DEFAULT_STRUCTURE;
-    private Boolean             authorized  = false;
+    private String              username        = "";
+    private String              password        = "";
+    private String              home            = "";
+    private String              workingDir      = DEFAULT_WORKING_DIR;
+    private InetSocketAddress   userAddress     = null;
+    private InetSocketAddress   serverAddress   = null;
+    private Boolean             isPassive       = true;
+    private Type                type            = DEFAULT_TYPE;
+    private Mode                mode            = DEFAULT_MODE;
+    private Form                form            = DEFAULT_FORM;
+    private Structure           structure       = DEFAULT_STRUCTURE;
+    private Boolean             authorized      = false;
 
     public String getUsername() {
         return this.username;
@@ -57,12 +59,26 @@ public class FTPTransferParameters {
         return this.userAddress;
     }
 
-    public void toActiveProcess(InetSocketAddress address) {
-        this.userAddress = address;
+    public InetSocketAddress getServerAddress() {
+        return serverAddress;
     }
 
-    public Boolean isActiveProcess() {
-        return this.userAddress != null;
+    public void setServerAddress(InetSocketAddress serverAddress) {
+        this.serverAddress = serverAddress;
+    }
+
+    public void toActiveProcess(InetSocketAddress address) {
+        this.userAddress = address;
+        isPassive = false;
+    }
+
+    public void toPassiveProcess() {
+        this.userAddress = null;
+        isPassive = true;
+    }
+
+    public Boolean isPassiveProcess() {
+        return isPassive;
     }
 
     public Type getType() {
@@ -111,6 +127,7 @@ public class FTPTransferParameters {
         this.home = "";
         this.workingDir = DEFAULT_WORKING_DIR;
         this.userAddress = null;
+        this.isPassive = true;
         this.type = DEFAULT_TYPE;
         this.mode = DEFAULT_MODE;
         this.form = DEFAULT_FORM;

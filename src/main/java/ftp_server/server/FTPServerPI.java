@@ -8,6 +8,7 @@ import ftp_server.view.View;
 import org.apache.log4j.Logger;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -27,6 +28,8 @@ class FTPServerPI implements Runnable {
 
     FTPServerPI(Socket socket, View view) throws IOException {
         this.socket = socket;
+        InetSocketAddress addr = new InetSocketAddress(socket.getLocalAddress().getHostAddress(), socket.getPort());
+        this.serverDTP.getParameters().setServerAddress(addr);
         this.view = view;
 
         this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));

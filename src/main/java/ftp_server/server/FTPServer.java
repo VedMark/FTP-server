@@ -19,7 +19,7 @@ public class FTPServer {
 
     private ServerSocket getPiSocket(Short port, Integer maxUsers) throws IOException {
         ServerSocket serverSocket = ServerSocketFactory.getDefault().createServerSocket();
-        serverSocket.bind(new InetSocketAddress(port));
+        serverSocket.bind(new InetSocketAddress("", port));
         serverSocket.setReceiveBufferSize(maxUsers);
         return serverSocket;
     }

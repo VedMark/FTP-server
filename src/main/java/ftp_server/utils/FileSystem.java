@@ -13,7 +13,7 @@ public class FileSystem {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd HH:mm", Locale.ENGLISH);
 
-    public static String normalizePath(String homename, String pathname) {
+    public static String normalizeDirPath(String homename, String pathname) {
         String answer;
 
         Path path = Paths.get(isAbsolutePathname(pathname) ? pathname : homename + "/" + pathname);
@@ -27,6 +27,12 @@ public class FileSystem {
         }
 
         return answer;
+    }
+
+    public static String getAbsolutePath(String homename, String pathname) {
+        Path path = Paths.get(isAbsolutePathname(pathname) ? pathname : homename + "/" + pathname);
+
+        return path.normalize().toString();
     }
 
     private static boolean isAbsolutePathname(String pathname) {

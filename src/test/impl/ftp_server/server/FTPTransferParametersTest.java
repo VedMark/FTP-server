@@ -3,7 +3,9 @@ package ftp_server.server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -69,15 +71,27 @@ class FTPTransferParametersTest {
     }
 
     @Test
-    void toActiveProcess() {
-        final InetSocketAddress address = InetSocketAddress.createUnresolved("127.0.0.1", 8000);
-        parameters.toActiveProcess(address);
-        assertNotNull(parameters.getUserAddress());
+    void getServerAddress() {
+        assertNull(parameters.getServerAddress());
     }
 
     @Test
-    void isActiveProcess() {
-        assertFalse(parameters.isActiveProcess());
+    void setServerAddress() {
+        InetSocketAddress address = new InetSocketAddress("127.0.0.1", 800);
+        parameters.setServerAddress(address);
+        assertEquals(address, parameters.getServerAddress());
+    }
+
+    @Test
+    void toActiveProcess() {
+        InetSocketAddress address = new InetSocketAddress("127.0.0.1", 800);
+        parameters.toActiveProcess(address);
+        assertEquals(address, parameters.getUserAddress());
+    }
+
+    @Test
+    void isPassiveProcess() {
+        assertEquals(true, parameters.isPassiveProcess());
     }
 
     @Test
@@ -147,6 +161,7 @@ class FTPTransferParametersTest {
         assertEquals("", parameters.getHome());
         assertEquals("/", parameters.getWorkingDir());
         assertNull(parameters.getUserAddress());
+        assertEquals(true, parameters.isPassiveProcess());
         assertEquals(Type.ASCII, parameters.getType());
         assertEquals(Mode.Stream, parameters.getMode());
         assertEquals(Form.NON_PRINT, parameters.getForm());

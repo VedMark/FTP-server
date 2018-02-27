@@ -54,6 +54,7 @@ CLASSES = \
         src/main/java/ftp_server/server/Mode.java \
         src/main/java/ftp_server/server/Structure.java \
         src/main/java/ftp_server/server/Type.java \
+	src/main/java/ftp_server/utils/FileSystem.java \
         src/main/java/ftp_server/view/FXServerApp.java \
         src/main/java/ftp_server/view/LogComponent.java \
         src/main/java/ftp_server/view/View.java \
@@ -73,5 +74,6 @@ clean:
 	$(RM) src/main/java/ftp_server/reply/*.class
 	$(RM) src/main/java/ftp_server/server/*.class
 	$(RM) src/main/java/ftp_server/view/*.class
+	$(RM) src/main/java/ftp_server/utils/*.class
 	$(RM) src/main/java/ftp_server/*.class
 

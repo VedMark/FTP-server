@@ -4,9 +4,6 @@ import ftp_server.reply.Reply;
 import ftp_server.server.FTPServerDTP;
 import ftp_server.utils.FileSystem;
 
-import java.io.File;
-import java.io.IOException;
-
 public class CDUP implements Command {
     private FTPServerDTP receiver;
     Reply reply;
@@ -18,7 +15,7 @@ public class CDUP implements Command {
     @Override
     public void execute() {
         if(this.receiver.getParameters().isAuthorized()) {
-            receiver.getParameters().setWorkingDir(FileSystem.normalizePath(receiver.getParameters().getHome(), ".."));
+            receiver.getParameters().setWorkingDir(FileSystem.normalizeDirPath(receiver.getParameters().getHome(), ".."));
             reply = new Reply(Reply.Code.CODE_200);
 
         } else {

@@ -4,7 +4,6 @@ import ftp_server.reply.Reply;
 import ftp_server.server.FTPServerDTP;
 import ftp_server.utils.FileSystem;
 
-import java.io.File;
 public class CWD implements Command {
     private static final String NO_SUCH_DIR_MESSAGE = "no such directory";
 
@@ -20,7 +19,7 @@ public class CWD implements Command {
     @Override
     public void execute() {
         if(this.receiver.getParameters().isAuthorized()) {
-            String dir = FileSystem.normalizePath(receiver.getParameters().getHome(), pathname);
+            String dir = FileSystem.normalizeDirPath(receiver.getParameters().getHome(), pathname);
 
             if(dir != null) {
                 receiver.getParameters().setWorkingDir(dir);
