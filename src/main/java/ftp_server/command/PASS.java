@@ -1,18 +1,18 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPProperties;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.ServerProperties;
+import ftp_server.server.DataTransferProcess;
 
 import java.util.MissingResourceException;
 
 public class PASS implements Command {
     private static final String AUTHENTICATION_FAILED_MESSAGE = "Login authentication failed";
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
     private String password;
 
-    public PASS(FTPServerDTP serverDTP, String password) {
+    public PASS(DataTransferProcess serverDTP, String password) {
         this.receiver = serverDTP;
         this.password = password;
     }
@@ -23,7 +23,7 @@ public class PASS implements Command {
             reply = new Reply(Reply.Code.CODE_503);
         } else if(this.verifyAccount()) {
             this.receiver.getParameters().setPassword(this.password);
-            this.receiver.getParameters().setHome(FTPProperties.getHome(this.receiver.getParameters().getUsername()));
+            this.receiver.getParameters().setHome(ServerProperties.getHome(this.receiver.getParameters().getUsername()));
             this.receiver.getParameters().setAuthorized(true);
             reply = new Reply(Reply.Code.CODE_230);
         } else {
@@ -54,7 +54,7 @@ public class PASS implements Command {
 
     private Boolean verifyAccount() {
         try {
-            return FTPProperties.getPassword(this.receiver.getParameters().getUsername()).equals(this.password);
+            return ServerProperties.getPassword(this.receiver.getParameters().getUsername()).equals(this.password);
         }
         catch(MissingResourceException exception) {
             return false;

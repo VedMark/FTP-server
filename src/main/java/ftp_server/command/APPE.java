@@ -1,14 +1,14 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 
 public class APPE implements Command {
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
     private String pathname;
 
-    public APPE(FTPServerDTP serverDTP, String pathname) {
+    public APPE(DataTransferProcess serverDTP, String pathname) {
         this.receiver = serverDTP;
         this.pathname = pathname;
     }

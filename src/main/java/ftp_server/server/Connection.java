@@ -15,8 +15,8 @@ abstract class Connection implements Runnable {
 
     private static final Integer BYTE_BUFFER_SIZE = 0x4000;
 
-    private FTPServerDTP serverDTP;
-    FTPTransferParameters parameters;
+    private DataTransferProcess serverDTP;
+    TransferParameters parameters;
     SocketChannel channel;
     private Path filePath;
 
@@ -26,7 +26,7 @@ abstract class Connection implements Runnable {
     private final Object lock = new Object();
     private Boolean notified = false;
 
-    Connection(FTPServerDTP serverDTP, FTPTransferParameters parameters) {
+    Connection(DataTransferProcess serverDTP, TransferParameters parameters) {
         this.serverDTP = serverDTP;
         this.parameters = parameters;
         start();
@@ -66,7 +66,7 @@ abstract class Connection implements Runnable {
     }
 
     private void write() throws IOException {
-        if(parameters.getType() == Type.ASCII) {
+        if(parameters.getType() == TypeEnum.ASCII) {
             writeAscii();
         } else {
             writeImage();

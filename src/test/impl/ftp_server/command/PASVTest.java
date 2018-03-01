@@ -1,7 +1,7 @@
 package ftp_server.command;
 
-import ftp_server.server.FTPProperties;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.ServerProperties;
+import ftp_server.server.DataTransferProcess;
 import ftp_server.server.ServiceChannelException;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ class PASVTest {
 
     @Test
     void execute_NotLoggedIn_Code530() throws UnexpectedCodeException {
-        PASV pasv = new PASV(new FTPServerDTP());
+        PASV pasv = new PASV(new DataTransferProcess());
         try {
             pasv.execute();
         } catch (ServiceChannelException e) {
@@ -30,7 +30,7 @@ class PASVTest {
 
     @Test
     void execute_Code227() throws UnexpectedCodeException {
-        FTPServerDTP serverDTP = new FTPServerDTP();
+        DataTransferProcess serverDTP = new DataTransferProcess();
         serverDTP.getParameters().setServerAddress(new InetSocketAddress("127.0.0.1", 8000));
         USER user = new USER(serverDTP, "admin");
         PASS pass = new PASS(serverDTP, "admin");
@@ -66,7 +66,7 @@ class PASVTest {
             public void run() {
                 try {
                     Thread.sleep(1000);
-                    client = new Socket(InetAddress.getByName(null).getHostAddress(), FTPProperties.getPortDTP());
+                    client = new Socket(InetAddress.getByName(null).getHostAddress(), ServerProperties.getPortDTP());
                 } catch (Exception e) {
                     fail("Could not run client");
                 }

@@ -1,14 +1,14 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 
 public class ACCT implements Command {
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
     private String accInfo;
 
-    public ACCT(FTPServerDTP serverDTP, String accInfo) {
+    public ACCT(DataTransferProcess serverDTP, String accInfo) {
         this.receiver = serverDTP;
         this.accInfo = accInfo;
     }

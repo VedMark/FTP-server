@@ -1,9 +1,8 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
-import ftp_server.server.Form;
-import ftp_server.server.Mode;
+import ftp_server.server.DataTransferProcess;
+import ftp_server.server.ModeEnum;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,11 +10,11 @@ import java.util.regex.Pattern;
 public class MODE implements Command {
     private static final String MODE_CODE_PATTERN = "[SBC]";
 
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
     private String mode_code;
 
-    public MODE(FTPServerDTP serverDTP, String mode_code) {
+    public MODE(DataTransferProcess serverDTP, String mode_code) {
         this.receiver = serverDTP;
         this.mode_code = mode_code.trim();
     }
@@ -38,7 +37,7 @@ public class MODE implements Command {
     private void processModeParameter() {
         switch (mode_code) {
             case "S":
-                receiver.getParameters().setMode(Mode.Stream);
+                receiver.getParameters().setMode(ModeEnum.Stream);
                 reply = new Reply(Reply.Code.CODE_200);
                 break;
             case "B": reply = new Reply(Reply.Code.CODE_504);   break;

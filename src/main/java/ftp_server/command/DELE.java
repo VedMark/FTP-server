@@ -1,7 +1,7 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 import ftp_server.utils.FileSystem;
 
 import java.io.IOException;
@@ -12,11 +12,11 @@ import java.nio.file.Paths;
 public class DELE implements Command {
     private static final String NO_PERMISSION_MESSAGE = "you have no permission for the action";
     private static final String NO_SUCH_FILE_MESSAGE = "no such file";
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
     private String pathname;
 
-    public DELE(FTPServerDTP serverDTP, String pathname) {
+    public DELE(DataTransferProcess serverDTP, String pathname) {
         this.receiver = serverDTP;
         this.pathname = pathname;
     }

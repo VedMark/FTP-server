@@ -43,7 +43,7 @@ public class Reply {
                 "221 Logout\r\n");
         map.put(Code.CODE_225, "225 Data connection open; no transfer in progress\r\n");
         map.put(Code.CODE_226, "226 %s\r\n");
-        map.put(Code.CODE_227, "227 Entering Passive Mode(%s,%s,%s,%s,%s,%s)\r\n");
+        map.put(Code.CODE_227, "227 Entering Passive ModeEnum(%s,%s,%s,%s,%s,%s)\r\n");
         map.put(Code.CODE_230, "230 User logged in, proceed\r\n");
         map.put(Code.CODE_250, "250 Requested file action okay\r\n");
         map.put(Code.CODE_257, "257 Your current location is %s\r\n");

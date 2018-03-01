@@ -1,13 +1,13 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 
 public class STOU implements Command {
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
 
-    public STOU(FTPServerDTP serverDTP) {
+    public STOU(DataTransferProcess serverDTP) {
         this.receiver = serverDTP;
     }
 

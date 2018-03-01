@@ -1,6 +1,6 @@
 package ftp_server.command;
 
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 import ftp_server.server.ServiceChannelException;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +12,7 @@ class PORTTest {
 
     @Test
     void execute_NotLoggedIn_Code530() throws UnexpectedCodeException {
-        PORT pasv = new PORT(new FTPServerDTP(), "127,0,0,1,31,64");
+        PORT pasv = new PORT(new DataTransferProcess(), "127,0,0,1,31,64");
         try {
             pasv.execute();
         } catch (ServiceChannelException e) {
@@ -24,7 +24,7 @@ class PORTTest {
 
     @Test
     void execute_Code200() throws UnexpectedCodeException {
-        FTPServerDTP serverDTP = new FTPServerDTP();
+        DataTransferProcess serverDTP = new DataTransferProcess();
         serverDTP.getParameters().setServerAddress(new InetSocketAddress("127.0.0.1", 8000));
         USER user = new USER(serverDTP, "admin");
         PASS pass = new PASS(serverDTP, "admin");

@@ -1,16 +1,14 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 import ftp_server.server.ServiceChannelException;
 
-import java.net.InetSocketAddress;
-
 public class PASV implements Command {
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
 
-    public PASV(FTPServerDTP serverDTP) {
+    public PASV(DataTransferProcess serverDTP) {
         this.receiver = serverDTP;
     }
 

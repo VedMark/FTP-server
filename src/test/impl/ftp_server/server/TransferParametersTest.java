@@ -3,18 +3,16 @@ package ftp_server.server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FTPTransferParametersTest {
-    private FTPTransferParameters parameters;
+class TransferParametersTest {
+    private TransferParameters parameters;
 
     @BeforeEach
     void initFTPTransferParameters() {
-        parameters = new FTPTransferParameters();
+        parameters = new TransferParameters();
     }
 
     @Test
@@ -96,48 +94,48 @@ class FTPTransferParametersTest {
 
     @Test
     void getType() {
-        assertEquals(Type.ASCII, parameters.getType());
+        assertEquals(TypeEnum.ASCII, parameters.getType());
     }
 
     @Test
     void setType() {
-        final Type type = Type.IMAGE;
+        final TypeEnum type = TypeEnum.IMAGE;
         parameters.setType(type);
         assertEquals(type, parameters.getType());
     }
 
     @Test
     void getMode() {
-        assertEquals(Mode.Stream, parameters.getMode());
+        assertEquals(ModeEnum.Stream, parameters.getMode());
     }
 
     @Test
     void setMode() {
-        final Mode mode = Mode.Block;
+        final ModeEnum mode = ModeEnum.Block;
         parameters.setMode(mode);
         assertEquals(mode, parameters.getMode());
     }
 
     @Test
     void getForm() {
-        assertEquals(Form.NON_PRINT, parameters.getForm());
+        assertEquals(FormEnum.NON_PRINT, parameters.getForm());
     }
 
     @Test
     void setForm() {
-        final Form form = Form.NON_PRINT;
+        final FormEnum form = FormEnum.NON_PRINT;
         parameters.setForm(form);
         assertEquals(form, parameters.getForm());
     }
 
     @Test
     void getStructure() {
-        assertEquals(Structure.FILE, parameters.getStructure());
+        assertEquals(StructureEnum.FILE, parameters.getStructure());
     }
 
     @Test
     void setStructure() {
-        final Structure structure = Structure.RECORD;
+        final StructureEnum structure = StructureEnum.RECORD;
         parameters.setStructure(structure);
         assertEquals(structure, parameters.getStructure());
     }
@@ -162,10 +160,10 @@ class FTPTransferParametersTest {
         assertEquals("/", parameters.getWorkingDir());
         assertNull(parameters.getUserAddress());
         assertEquals(true, parameters.isPassiveProcess());
-        assertEquals(Type.ASCII, parameters.getType());
-        assertEquals(Mode.Stream, parameters.getMode());
-        assertEquals(Form.NON_PRINT, parameters.getForm());
-        assertEquals(Structure.FILE, parameters.getStructure());
+        assertEquals(TypeEnum.ASCII, parameters.getType());
+        assertEquals(ModeEnum.Stream, parameters.getMode());
+        assertEquals(FormEnum.NON_PRINT, parameters.getForm());
+        assertEquals(StructureEnum.FILE, parameters.getStructure());
         assertEquals(false, parameters.isAuthorized());
     }
 }

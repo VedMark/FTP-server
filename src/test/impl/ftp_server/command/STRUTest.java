@@ -1,18 +1,18 @@
 package ftp_server.command;
 
-import ftp_server.server.FTPServerDTP;
-import ftp_server.server.Mode;
+import ftp_server.server.DataTransferProcess;
+import ftp_server.server.ModeEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class STRUTest {
-    FTPServerDTP serverDTP;
+    DataTransferProcess serverDTP;
 
     @BeforeEach
     void initStruTest() {
-        serverDTP = new FTPServerDTP();
+        serverDTP = new DataTransferProcess();
         USER user = new USER(serverDTP, "admin");
         PASS pass = new PASS(serverDTP, "admin");
         user.execute();
@@ -35,7 +35,7 @@ class STRUTest {
         stru.execute();
         String response = stru.getResponseMessage();
         assertEquals("200 Command okay, structure: stream\r\n", response);
-        assertEquals(Mode.Stream, serverDTP.getParameters().getMode());
+        assertEquals(ModeEnum.Stream, serverDTP.getParameters().getMode());
     }
 
     @Test

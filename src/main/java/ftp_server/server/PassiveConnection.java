@@ -12,7 +12,7 @@ public class PassiveConnection extends Connection {
 
     private ServerSocketChannel serverChannel = null;
 
-    PassiveConnection(FTPServerDTP serverDTP, FTPTransferParameters parameters) {
+    PassiveConnection(DataTransferProcess serverDTP, TransferParameters parameters) {
         super(serverDTP, parameters);
     }
 
@@ -21,12 +21,12 @@ public class PassiveConnection extends Connection {
         serverChannel = ServerSocketChannel.open();
         serverChannel.configureBlocking(true);
         try {
-            serverChannel.socket().setSoTimeout(FTPProperties.getTimeout());
+            serverChannel.socket().setSoTimeout(ServerProperties.getTimeout());
         } catch (ConfigException e) {
             serverChannel.socket().setSoTimeout(0);
         }
         try {
-            serverChannel.socket().bind(new InetSocketAddress("", FTPProperties.getPortDTP()));
+            serverChannel.socket().bind(new InetSocketAddress("", ServerProperties.getPortDTP()));
         } catch (ConfigException e) {
             log.error("");
             serverChannel.socket().bind(new InetSocketAddress("", 20));

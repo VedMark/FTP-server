@@ -1,19 +1,19 @@
 package ftp_server.command;
 
-import ftp_server.server.FTPServerDTP;
-import ftp_server.server.Form;
-import ftp_server.server.Type;
+import ftp_server.server.DataTransferProcess;
+import ftp_server.server.FormEnum;
+import ftp_server.server.TypeEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TYPETest {
-    private FTPServerDTP serverDTP;
+    private DataTransferProcess serverDTP;
 
     @BeforeEach
     void initTypeTest() {
-        serverDTP = new FTPServerDTP();
+        serverDTP = new DataTransferProcess();
         USER user = new USER(serverDTP, "admin");
         PASS pass = new PASS(serverDTP, "admin");
         user.execute();
@@ -36,7 +36,7 @@ class TYPETest {
         type.execute();
         String response = type.getResponseMessage();
         assertEquals("200 Command okay, type: ascii\r\n", response);
-        assertEquals(Type.ASCII, serverDTP.getParameters().getType());
+        assertEquals(TypeEnum.ASCII, serverDTP.getParameters().getType());
     }
 
     @Test
@@ -45,8 +45,8 @@ class TYPETest {
         type.execute();
         String response = type.getResponseMessage();
         assertEquals("200 Command okay, type: ascii\r\n", response);
-        assertEquals(Type.ASCII, serverDTP.getParameters().getType());
-        assertEquals(Form.NON_PRINT, serverDTP.getParameters().getForm());
+        assertEquals(TypeEnum.ASCII, serverDTP.getParameters().getType());
+        assertEquals(FormEnum.NON_PRINT, serverDTP.getParameters().getForm());
     }
 
     @Test
@@ -55,7 +55,7 @@ class TYPETest {
         type.execute();
         String response = type.getResponseMessage();
         assertEquals("504 Command not implemented for that parameter\r\n", response);
-        assertEquals(Type.ASCII, serverDTP.getParameters().getType());
+        assertEquals(TypeEnum.ASCII, serverDTP.getParameters().getType());
     }
 
     @Test
@@ -72,7 +72,7 @@ class TYPETest {
         type.execute();
         String response = type.getResponseMessage();
         assertEquals("200 Command okay, type: image\r\n", response);
-        assertEquals(Type.IMAGE, serverDTP.getParameters().getType());
+        assertEquals(TypeEnum.IMAGE, serverDTP.getParameters().getType());
     }
 
     @Test

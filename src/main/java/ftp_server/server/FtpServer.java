@@ -10,14 +10,14 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class FTPServer {
+public class FtpServer {
     private static final Logger log = Logger.getLogger(Main.class.getName());
 
     private ServerSocket socket;
     private View view;
 
-    public FTPServer() throws IOException, ConfigException {
-        this.socket = getPiSocket(FTPProperties.getPortPI(), FTPProperties.getCapacity());
+    public FtpServer() throws IOException, ConfigException {
+        this.socket = getPiSocket(ServerProperties.getPortPI(), ServerProperties.getCapacity());
     }
 
     private ServerSocket getPiSocket(Short port, Integer maxUsers) throws IOException {
@@ -30,11 +30,11 @@ public class FTPServer {
     public void run() throws IOException, ConfigException {
         while(true) {
             Socket socket = this.socket.accept();
-            socket.setSoTimeout(FTPProperties.getTimeout());
+            socket.setSoTimeout(ServerProperties.getTimeout());
 
-            FTPServerPI pi = null;
+            ProtocolInterpreter pi;
             try {
-                pi = new FTPServerPI(socket, this.view);
+                pi = new ProtocolInterpreter(socket, this.view);
                 pi.start();
             } catch (ServiceChannelException e) {
                 log.error(e.getMessage());

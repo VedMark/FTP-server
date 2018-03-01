@@ -10,8 +10,8 @@ import java.net.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FTPServerPITest extends ApplicationTests {
-    private FTPServerPI serverPI;
+class ProtocolInterpreterTest extends ApplicationTests {
+    private ProtocolInterpreter serverPI;
     private Socket client;
     private ServerSocket server;
 
@@ -23,7 +23,7 @@ class FTPServerPITest extends ApplicationTests {
         Socket s = server.accept();
 
         try {
-            this.serverPI = new FTPServerPI(s, new LogComponent());
+            this.serverPI = new ProtocolInterpreter(s, new LogComponent());
         } catch (ServiceChannelException e) {
             fail("Could not start Server PI");
         }

@@ -7,12 +7,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class FTPServerTest extends ApplicationTests {
-    private FTPServer ftpServer;
+class FtpServerTest extends ApplicationTests {
+    private FtpServer ftpServer;
 
     @BeforeEach
     void initLogComponent() throws Exception {
-        this.ftpServer = new FTPServer();
+        this.ftpServer = new FtpServer();
     }
 
     @Test

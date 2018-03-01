@@ -1,6 +1,6 @@
 package ftp_server.server;
 
-public interface ConnectionListenerDTP {
+public interface DataConnectionListener {
     enum Result {
         GOOD, BAD
     }

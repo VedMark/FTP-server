@@ -1,14 +1,14 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 
 public class SITE implements Command {
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
     private String string;
 
-    public SITE(FTPServerDTP serverDTP, String string) {
+    public SITE(DataTransferProcess serverDTP, String string) {
         this.receiver = serverDTP;
         this.string = string;
     }

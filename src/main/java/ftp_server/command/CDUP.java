@@ -1,14 +1,14 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 import ftp_server.utils.FileSystem;
 
 public class CDUP implements Command {
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
 
-    public CDUP(FTPServerDTP serverDTP) {
+    public CDUP(DataTransferProcess serverDTP) {
         this.receiver = serverDTP;
     }
 

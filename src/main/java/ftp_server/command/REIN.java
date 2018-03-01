@@ -2,17 +2,14 @@ package ftp_server.command;
 
 import ftp_server.reply.Reply;
 import ftp_server.server.ConfigException;
-import ftp_server.server.FTPProperties;
-import ftp_server.server.FTPServerDTP;
-
-import java.net.SocketException;
-import java.util.ResourceBundle;
+import ftp_server.server.ServerProperties;
+import ftp_server.server.DataTransferProcess;
 
 public class REIN implements Command {
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
 
-    public REIN(FTPServerDTP serverDTP) {
+    public REIN(DataTransferProcess serverDTP) {
         this.receiver = serverDTP;
     }
 
@@ -37,7 +34,7 @@ public class REIN implements Command {
     private String getCode220FormattedString() {
         Integer res;
         try {
-            res = FTPProperties.getTimeout() / (60 * 1000); // converting milliseconds to minutes
+            res = ServerProperties.getTimeout() / (60 * 1000); // converting milliseconds to minutes
         } catch (ConfigException e) {
             res = 0;
         }

@@ -1,5 +1,5 @@
 package ftp_server.server;
 
-public enum Mode {
+public enum ModeEnum {
     Stream, Block, Compressed
 }

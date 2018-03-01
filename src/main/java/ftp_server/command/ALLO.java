@@ -1,14 +1,14 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 
 public class ALLO implements Command {
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
     private String dec_int;
 
-    public ALLO(FTPServerDTP serverDTP, String dec_int) {
+    public ALLO(DataTransferProcess serverDTP, String dec_int) {
         this.receiver = serverDTP;
         this.dec_int = dec_int;
     }

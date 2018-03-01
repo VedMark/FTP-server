@@ -2,13 +2,13 @@ package ftp_server.server;
 
 import java.net.InetSocketAddress;
 
-public class FTPTransferParameters {
+public class TransferParameters {
 
     private static final String     DEFAULT_WORKING_DIR = "/";
-    private static final Type       DEFAULT_TYPE        = Type.ASCII;
-    private static final Mode       DEFAULT_MODE        = Mode.Stream;
-    private static final Form       DEFAULT_FORM        = Form.NON_PRINT;
-    private static final Structure  DEFAULT_STRUCTURE   = Structure.FILE;
+    private static final TypeEnum DEFAULT_TYPE        = TypeEnum.ASCII;
+    private static final ModeEnum DEFAULT_MODE        = ModeEnum.Stream;
+    private static final FormEnum DEFAULT_FORM        = FormEnum.NON_PRINT;
+    private static final StructureEnum DEFAULT_STRUCTURE   = StructureEnum.FILE;
 
     private String              username        = "";
     private String              password        = "";
@@ -17,10 +17,10 @@ public class FTPTransferParameters {
     private InetSocketAddress   userAddress     = null;
     private InetSocketAddress   serverAddress   = null;
     private Boolean             isPassive       = false;
-    private Type                type            = DEFAULT_TYPE;
-    private Mode                mode            = DEFAULT_MODE;
-    private Form                form            = DEFAULT_FORM;
-    private Structure           structure       = DEFAULT_STRUCTURE;
+    private TypeEnum type            = DEFAULT_TYPE;
+    private ModeEnum mode            = DEFAULT_MODE;
+    private FormEnum form            = DEFAULT_FORM;
+    private StructureEnum structure       = DEFAULT_STRUCTURE;
     private Boolean             authorized      = false;
 
     public String getUsername() {
@@ -81,35 +81,35 @@ public class FTPTransferParameters {
         return isPassive;
     }
 
-    public Type getType() {
+    public TypeEnum getType() {
         return this.type;
     }
 
-    public void setType(Type type) {
+    public void setType(TypeEnum type) {
         this.type = type;
     }
 
-    public Mode getMode() {
+    public ModeEnum getMode() {
         return this.mode;
     }
 
-    public void setMode(Mode mode) {
+    public void setMode(ModeEnum mode) {
         this.mode = mode;
     }
 
-    public Form getForm() {
+    public FormEnum getForm() {
         return form;
     }
 
-    public void setForm(Form form) {
+    public void setForm(FormEnum form) {
         this.form = form;
     }
 
-    public Structure getStructure() {
+    public StructureEnum getStructure() {
         return this.structure;
     }
 
-    public void setStructure(Structure structure) {
+    public void setStructure(StructureEnum structure) {
         this.structure = structure;
     }
 

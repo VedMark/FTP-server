@@ -2,7 +2,7 @@ package ftp_server.view;
 
 import ftp_server.Main;
 import ftp_server.server.ConfigException;
-import ftp_server.server.FTPServer;
+import ftp_server.server.FtpServer;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -17,7 +17,7 @@ public class FXServerApp extends Application {
     private static final Logger log = LogManager.getLogger(Main.class);
 
     private LogComponent logComponent;
-    private FTPServer server;
+    private FtpServer server;
     private Thread serverThread;
 
     public static void start() {
@@ -28,6 +28,7 @@ public class FXServerApp extends Application {
     public void stop() {
         this.server.destroy();
         this.serverThread.interrupt();
+        System.exit(0);
     }
 
     @Override
@@ -39,13 +40,13 @@ public class FXServerApp extends Application {
 
         primaryStage.setTitle("FTP server");
         primaryStage.setScene(new Scene(root, 500, 300));
-        //primaryStage.show();
+        primaryStage.show();
 
         this.serverThread = new Thread("Server Thread") {
             @Override
             public void run() {
                 try {
-                    server = new FTPServer();
+                    server = new FtpServer();
                     server.setView(logComponent);
                     server.run();
                 } catch (IOException | ConfigException exception) {

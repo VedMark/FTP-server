@@ -1,5 +1,5 @@
 package ftp_server.server;
 
-public enum Form {
+public enum FormEnum {
     NON_PRINT, TELNET, CARRIAGE;
 }

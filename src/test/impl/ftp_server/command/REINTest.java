@@ -1,6 +1,6 @@
 package ftp_server.command;
 
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,7 +9,7 @@ class REINTest {
 
     @Test
     void execute() throws UnexpectedCodeException {
-        REIN rein = new REIN(new FTPServerDTP());
+        REIN rein = new REIN(new DataTransferProcess());
         rein.execute();
         String response = rein.getResponseMessage();
         assertEquals("220-----------Welcome to FTP-server----------\n" +

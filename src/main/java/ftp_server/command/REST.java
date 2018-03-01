@@ -1,14 +1,14 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 
 public class REST implements Command {
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
     private String marker;
 
-    public REST(FTPServerDTP serverDTP, String marker) {
+    public REST(DataTransferProcess serverDTP, String marker) {
         this.receiver = serverDTP;
         this.marker = marker;
     }

@@ -1,13 +1,13 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 
 public class PWD implements Command {
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
 
-    public PWD(FTPServerDTP serverDTP) {
+    public PWD(DataTransferProcess serverDTP) {
         this.receiver = serverDTP;
     }
 

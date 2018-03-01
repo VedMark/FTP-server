@@ -3,7 +3,7 @@ package ftp_server.server;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class FTPProperties {
+public class ServerProperties {
     private static final String CONFIG_FILE = "config";
 
     private static final Long MIN_SHORT_VALUE = (long) 0;
@@ -18,7 +18,7 @@ public class FTPProperties {
 
     private static final ResourceBundle bundle = ResourceBundle.getBundle(CONFIG_FILE);
 
-    public FTPProperties() {
+    public ServerProperties() {
     }
 
     public static Short getPortPI() throws ConfigException, MissingResourceException {

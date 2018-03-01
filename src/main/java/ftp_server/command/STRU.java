@@ -1,19 +1,19 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
-import ftp_server.server.Structure;
+import ftp_server.server.DataTransferProcess;
+import ftp_server.server.StructureEnum;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class STRU implements Command {
     private static final String STRUCTURE_CODE_PATTERN = "[FRP]";
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
     private String structure_code;
 
-    public STRU(FTPServerDTP serverDTP, String structure_code) {
+    public STRU(DataTransferProcess serverDTP, String structure_code) {
         this.receiver = serverDTP;
         this.structure_code = structure_code;
     }
@@ -36,7 +36,7 @@ public class STRU implements Command {
     private void processStructureParameter() {
         switch (structure_code) {
             case "F":
-                receiver.getParameters().setStructure(Structure.FILE);
+                receiver.getParameters().setStructure(StructureEnum.FILE);
                 reply = new Reply(Reply.Code.CODE_200);
                 break;
             case "R": reply = new Reply(Reply.Code.CODE_504);   break;

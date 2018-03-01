@@ -1,6 +1,6 @@
 package ftp_server.command;
 
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,11 +9,11 @@ import java.io.File;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CDUPTest {
-    private FTPServerDTP serverDTP;
+    private DataTransferProcess serverDTP;
 
     @BeforeEach
     void initAccount() {
-        serverDTP = new FTPServerDTP();
+        serverDTP = new DataTransferProcess();
     }
 
     @Test

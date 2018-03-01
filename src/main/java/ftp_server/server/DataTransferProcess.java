@@ -4,24 +4,24 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 
-public class FTPServerDTP {
+public class DataTransferProcess {
 
     private Connection connection = null;
-    private FTPTransferParameters parameters = new FTPTransferParameters();
+    private TransferParameters parameters = new TransferParameters();
 
-    private Set<ConnectionListenerDTP> listeners = Collections.synchronizedSet(new HashSet<>());
+    private Set<DataConnectionListener> listeners = Collections.synchronizedSet(new HashSet<>());
 
     private Boolean isConnectionOpen = false;
 
-    public FTPTransferParameters getParameters() {
+    public TransferParameters getParameters() {
         return parameters;
     }
 
-    public void addListener(ConnectionListenerDTP listener) {
+    public void addListener(DataConnectionListener listener) {
             listeners.add(listener);
     }
 
-    public void removeListener(ConnectionListenerDTP listener) {
+    public void removeListener(DataConnectionListener listener) {
         listeners.remove(listener);
     }
 
@@ -32,16 +32,16 @@ public class FTPServerDTP {
                     new ActiveConnection(this, parameters);
 
             connection.negotiate();
-            for (ConnectionListenerDTP listener : listeners) {
-                listener.onActionNegotiated(ConnectionListenerDTP.Result.GOOD);
+            for (DataConnectionListener listener : listeners) {
+                listener.onActionNegotiated(DataConnectionListener.Result.GOOD);
             }
             isConnectionOpen = true;
             connection.start();
 
         } catch (IOException exception) {
             isConnectionOpen = false;
-            for (ConnectionListenerDTP listener : listeners) {
-                listener.onActionNegotiated(ConnectionListenerDTP.Result.BAD);
+            for (DataConnectionListener listener : listeners) {
+                listener.onActionNegotiated(DataConnectionListener.Result.BAD);
             }
         }
     }
@@ -66,17 +66,17 @@ public class FTPServerDTP {
         connection.stop();
         isConnectionOpen = false;
 
-        for(ConnectionListenerDTP listener: listeners) {
+        for(DataConnectionListener listener: listeners) {
             listener.onConnectionAborted();
         }
     }
 
     public void handleCompleted(boolean completed) {
-        ConnectionListenerDTP.Result result = completed ?
-                ConnectionListenerDTP.Result.GOOD :
-                ConnectionListenerDTP.Result.BAD;
+        DataConnectionListener.Result result = completed ?
+                DataConnectionListener.Result.GOOD :
+                DataConnectionListener.Result.BAD;
 
-        for(ConnectionListenerDTP listener: listeners) {
+        for(DataConnectionListener listener: listeners) {
             try {
                 listener.onTransferFinished(result);
             } catch (ServiceChannelException ignored) { }

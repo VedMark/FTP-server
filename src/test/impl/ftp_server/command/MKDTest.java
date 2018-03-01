@@ -1,13 +1,13 @@
 package ftp_server.command;
 
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MKDTest {
-    FTPServerDTP serverDTP;
+    DataTransferProcess serverDTP;
     private String ftp = "ftp";
 
     MKDTest() {
@@ -15,7 +15,7 @@ class MKDTest {
 
     @BeforeEach
     void initAccount() {
-        serverDTP = new FTPServerDTP();
+        serverDTP = new DataTransferProcess();
 
         USER user = new USER(serverDTP, "admin");
         PASS pass = new PASS(serverDTP, "admin");

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.channels.SocketChannel;
 
 public class ActiveConnection extends Connection {
-    ActiveConnection(FTPServerDTP serverDTP, FTPTransferParameters parameters) {
+    ActiveConnection(DataTransferProcess serverDTP, TransferParameters parameters) {
         super(serverDTP, parameters);
     }
 

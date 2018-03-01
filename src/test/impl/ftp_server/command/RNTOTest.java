@@ -1,6 +1,6 @@
 package ftp_server.command;
 
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,7 +9,7 @@ class RNTOTest {
 
     @Test
     void execute_Code530() throws UnexpectedCodeException {
-        RNTO rnto = new RNTO(new FTPServerDTP(), "admin");
+        RNTO rnto = new RNTO(new DataTransferProcess(), "admin");
         rnto.execute();
         String response = rnto.getResponseMessage();
         assertEquals("530 You are not logged in\r\n", response);
@@ -17,7 +17,7 @@ class RNTOTest {
 
     @Test
     void execute_Code202() throws UnexpectedCodeException {
-        FTPServerDTP serverDTP = new FTPServerDTP();
+        DataTransferProcess serverDTP = new DataTransferProcess();
         USER user = new USER(serverDTP, "admin");
         PASS pass = new PASS(serverDTP, "admin");
         user.execute();

@@ -12,21 +12,21 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
-class FTPServerPI implements Runnable, ConnectionListenerDTP {
+class ProtocolInterpreter implements Runnable, DataConnectionListener {
     private static final Logger log = Logger.getLogger(Main.class.getName());
 
     private Socket socket;
     private final BufferedReader reader;
     private final BufferedWriter writer;
 
-    private FTPServerDTP serverDTP = new FTPServerDTP();
-    private FTPCommandController cmdController = new FTPCommandController(this.serverDTP);
+    private DataTransferProcess serverDTP = new DataTransferProcess();
+    private CommandController cmdController = new CommandController(this.serverDTP);
 
     private Thread thread = null;
 
     private View view;
 
-    FTPServerPI(Socket socket, View view) throws ServiceChannelException {
+    ProtocolInterpreter(Socket socket, View view) throws ServiceChannelException {
         this.socket = socket;
         this.view = view;
 
@@ -45,7 +45,10 @@ class FTPServerPI implements Runnable, ConnectionListenerDTP {
 
     public void start() {
         if(this.thread == null) {
-            this.thread = new Thread(this, "Thread for " + this.socket.getInetAddress() + " " + this.socket.getPort());
+            this.thread = new Thread(
+                    this,
+                    "Thread for " + this.socket.getInetAddress() + " " + this.socket.getPort()
+            );
             this.thread.start();
         }
     }
@@ -93,24 +96,34 @@ class FTPServerPI implements Runnable, ConnectionListenerDTP {
         }
     }
 
+    private enum Sender {
+        FROM_SERVER, FROM_CLIENT
+    }
+
     private void sendMessage(String message) throws IOException {
         this.writer.write(message);
         this.writer.flush();
-        this.updateDialog(message);
+        this.updateDialog(message, Sender.FROM_SERVER);
     }
 
     private Command receiveMessage() throws IOException {
         String message = reader.readLine();
         if(message != null) {
-            this.updateDialog(message + "\n");
+            this.updateDialog(message + "\n", Sender.FROM_CLIENT);
             return cmdController.createCommand(message);
         } else {
             throw new SocketException("Connection unexpectedly closed by remote passiveSocket");
         }
     }
 
-    private void updateDialog(String info) {
-        this.view.update(info);
+    private void updateDialog(String info, Sender sender) {
+        String preffix;
+        if(sender == Sender.FROM_SERVER) {
+            preffix = "---->";
+        } else {
+            preffix = "<----";
+        }
+        this.view.update(preffix + " " + socket.getRemoteSocketAddress().toString() + " " + info);
     }
 
     @Override
@@ -164,7 +177,7 @@ class FTPServerPI implements Runnable, ConnectionListenerDTP {
     private String getCode220FormattedString(Reply reply) {
         Integer res; // converting milliseconds to minutes
         try {
-            res = FTPProperties.getTimeout() / (60 * 1000);
+            res = ServerProperties.getTimeout() / (60 * 1000);
         } catch (ConfigException e) {
             res = 0;
         }

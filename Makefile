@@ -41,24 +41,26 @@ CLASSES = \
         src/main/java/ftp_server/command/STRU.java \
         src/main/java/ftp_server/command/SYST.java \
         src/main/java/ftp_server/command/TYPE.java \
-	src/main/java/ftp_server/command/UnexpectedCodeException.java \
+	    src/main/java/ftp_server/command/UnexpectedCodeException.java \
         src/main/java/ftp_server/command/USER.java \
         src/main/java/ftp_server/reply/Reply.java \
-	src/main/java/ftp_server/server/ActiveConnection.java \
+	    src/main/java/ftp_server/server/ActiveConnection.java \
+        src/main/java/ftp_server/server/CommandController.java \
         src/main/java/ftp_server/server/ConfigException.java \
-	src/main/java/ftp_server/server/Form.java \
-        src/main/java/ftp_server/server/FTPCommandController.java \
-        src/main/java/ftp_server/server/FTPProperties.java \
-        src/main/java/ftp_server/server/FTPServerDTP.java \
-        src/main/java/ftp_server/server/FTPServer.java \
-        src/main/java/ftp_server/server/FTPServerPI.java \
-        src/main/java/ftp_server/server/FTPTransferParameters.java \
-        src/main/java/ftp_server/server/Mode.java \
-	src/main/java/ftp_server/server/PassiveConnection.java \
-	src/main/java/ftp_server/server/ServerChannelException.java \
-        src/main/java/ftp_server/server/Structure.java \
-        src/main/java/ftp_server/server/Type.java \
-	src/main/java/ftp_server/utils/FileSystem.java \
+        src/main/java/ftp_server/server/Connection.java \
+	    src/main/java/ftp_server/server/DataConnectionListener.java \
+        src/main/java/ftp_server/server/DataTransferProcess.java \
+	    src/main/java/ftp_server/server/FormEnum.java \
+        src/main/java/ftp_server/server/FtpServer.java \
+        src/main/java/ftp_server/server/ModeEnum.java \
+	    src/main/java/ftp_server/server/PassiveConnection.java \
+        src/main/java/ftp_server/server/ProtocolInterpreter.java \
+        src/main/java/ftp_server/server/ServerProperties.java \
+	    src/main/java/ftp_server/server/ServiceChannelException.java \
+        src/main/java/ftp_server/server/StructureEnum.java \
+        src/main/java/ftp_server/server/TransferParameters.java \
+        src/main/java/ftp_server/server/TypeEnum.java \
+	    src/main/java/ftp_server/utils/FileSystem.java \
         src/main/java/ftp_server/view/FXServerApp.java \
         src/main/java/ftp_server/view/LogComponent.java \
         src/main/java/ftp_server/view/View.java \

@@ -1,17 +1,17 @@
 package ftp_server.command;
 
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class USERTest {
-    private FTPServerDTP dtp;
+    private DataTransferProcess dtp;
 
     @BeforeEach
     void initServerDTP() {
-        dtp = new FTPServerDTP();
+        dtp = new DataTransferProcess();
     }
 
     @Test

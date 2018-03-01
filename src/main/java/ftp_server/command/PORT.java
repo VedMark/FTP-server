@@ -1,7 +1,7 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 import ftp_server.server.ServiceChannelException;
 
 import java.net.InetSocketAddress;
@@ -11,11 +11,11 @@ import java.util.regex.Pattern;
 public class PORT implements Command {
     private static final String ADDRESS_PATTERN =
             "(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(,(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){5}";
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     private Reply reply;
     private String host_port;
 
-    public PORT(FTPServerDTP serverDTP, String host_port) {
+    public PORT(DataTransferProcess serverDTP, String host_port) {
         this.receiver = serverDTP;
         this.host_port = host_port;
     }

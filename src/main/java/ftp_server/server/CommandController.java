@@ -2,10 +2,10 @@ package ftp_server.server;
 
 import ftp_server.command.*;
 
-class FTPCommandController {
-    private FTPServerDTP serverDTP;
+class CommandController {
+    private DataTransferProcess serverDTP;
 
-    FTPCommandController(FTPServerDTP serverDTP) {
+    CommandController(DataTransferProcess serverDTP) {
         this.serverDTP = serverDTP;
     }
 

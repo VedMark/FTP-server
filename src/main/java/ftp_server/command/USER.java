@@ -1,18 +1,18 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPProperties;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.ServerProperties;
+import ftp_server.server.DataTransferProcess;
 
 import java.util.MissingResourceException;
 
 public class USER implements Command {
 
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     private Reply reply = null;
     private String username;
 
-    public USER(FTPServerDTP serverDTP, String username) {
+    public USER(DataTransferProcess serverDTP, String username) {
         this.receiver = serverDTP;
         this.username = username;
     }
@@ -35,10 +35,10 @@ public class USER implements Command {
     }
 
     private void checkIfNoPasswordForUser() {
-        if (FTPProperties.getPassword(this.username).isEmpty()) {
+        if (ServerProperties.getPassword(this.username).isEmpty()) {
             reply = new Reply(Reply.Code.CODE_230);
             this.receiver.getParameters().setAuthorized(true);
-            this.receiver.getParameters().setHome(FTPProperties.getHome(this.receiver.getParameters().getUsername()));
+            this.receiver.getParameters().setHome(ServerProperties.getHome(this.receiver.getParameters().getUsername()));
         } else {
             reply = new Reply(Reply.Code.CODE_331);
         }

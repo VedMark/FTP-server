@@ -1,6 +1,6 @@
 package ftp_server.command;
 
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,12 +17,12 @@ class STATTest {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd HH:mm", Locale.ENGLISH);
 
-    private FTPServerDTP serverDTP;
+    private DataTransferProcess serverDTP;
     private File file;
 
     @BeforeEach
     void initServerDTP() {
-        serverDTP = new FTPServerDTP();
+        serverDTP = new DataTransferProcess();
 
         USER user = new USER(serverDTP, "admin");
         PASS pass = new PASS(serverDTP, "admin");
@@ -51,7 +51,7 @@ class STATTest {
         STAT stat = new STAT(serverDTP, "");
         stat.execute();
         String response = stat.getResponseMessage();
-        assertEquals("211 Mode: stream; Type: ascii; Form: non-print; Structure: file\r\n", response);
+        assertEquals("211 ModeEnum: stream; TypeEnum: ascii; FormEnum: non-print; StructureEnum: file\r\n", response);
     }
 
     @Test

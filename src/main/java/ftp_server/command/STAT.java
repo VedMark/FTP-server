@@ -1,19 +1,19 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 import ftp_server.utils.FileSystem;
 
 import java.io.File;
 
 public class STAT implements Command {
-    private static final String RESPONSE_211_FORMAT = "Mode: %s; Type: %s; Form: %s; Structure: %s";
+    private static final String RESPONSE_211_FORMAT = "mode: %s; type: %s; form: %s; structure: %s";
 
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
     private String pathname;
 
-    public STAT(FTPServerDTP serverDTP, String pathname) {
+    public STAT(DataTransferProcess serverDTP, String pathname) {
         this.receiver = serverDTP;
         this.pathname = pathname.trim();
         if(!pathname.isEmpty()) {

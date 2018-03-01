@@ -2,8 +2,7 @@ package ftp_server.command;
 
 import ftp_server.Main;
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
-import ftp_server.server.ServiceChannelException;
+import ftp_server.server.DataTransferProcess;
 import ftp_server.utils.FileSystem;
 import org.apache.log4j.Logger;
 
@@ -14,11 +13,11 @@ import java.nio.file.Paths;
 public class RETR implements Command {
     private static final Logger log = Logger.getLogger(Main.class.getName());
 
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
     private String pathname;
 
-    public RETR(FTPServerDTP serverDTP, String pathname) {
+    public RETR(DataTransferProcess serverDTP, String pathname) {
         this.receiver = serverDTP;
         this.pathname = pathname;
     }

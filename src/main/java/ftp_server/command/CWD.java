@@ -1,17 +1,17 @@
 package ftp_server.command;
 
 import ftp_server.reply.Reply;
-import ftp_server.server.FTPServerDTP;
+import ftp_server.server.DataTransferProcess;
 import ftp_server.utils.FileSystem;
 
 public class CWD implements Command {
     private static final String NO_SUCH_DIR_MESSAGE = "no such directory";
 
-    private FTPServerDTP receiver;
+    private DataTransferProcess receiver;
     Reply reply;
     private String pathname;
 
-    public CWD(FTPServerDTP serverDTP, String pathname) {
+    public CWD(DataTransferProcess serverDTP, String pathname) {
         this.receiver = serverDTP;
         this.pathname = pathname;
     }

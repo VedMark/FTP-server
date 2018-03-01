@@ -1,18 +1,18 @@
 package ftp_server.command;
 
-import ftp_server.server.FTPServerDTP;
-import ftp_server.server.Mode;
+import ftp_server.server.DataTransferProcess;
+import ftp_server.server.ModeEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MODETest {
-    FTPServerDTP serverDTP;
+    DataTransferProcess serverDTP;
 
     @BeforeEach
     void initModeTest() {
-        serverDTP = new FTPServerDTP();
+        serverDTP = new DataTransferProcess();
         USER user = new USER(serverDTP, "admin");
         PASS pass = new PASS(serverDTP, "admin");
         user.execute();
@@ -35,7 +35,7 @@ class MODETest {
         mode.execute();
         String response = mode.getResponseMessage();
         assertEquals("200 Command okay, mode: stream\r\n", response);
-        assertEquals(Mode.Stream, serverDTP.getParameters().getMode());
+        assertEquals(ModeEnum.Stream, serverDTP.getParameters().getMode());
     }
 
     @Test
