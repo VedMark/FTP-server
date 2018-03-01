@@ -1,6 +1,8 @@
 package ftp_server.server;
 
+import ftp_server.Main;
 import ftp_server.view.View;
+import org.apache.log4j.Logger;
 
 import javax.net.ServerSocketFactory;
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class FTPServer {
+    private static final Logger log = Logger.getLogger(Main.class.getName());
 
     private ServerSocket socket;
     private View view;
@@ -29,8 +32,13 @@ public class FTPServer {
             Socket socket = this.socket.accept();
             socket.setSoTimeout(FTPProperties.getTimeout());
 
-            FTPServerPI pi = new FTPServerPI(socket, this.view);
-            pi.start();
+            FTPServerPI pi = null;
+            try {
+                pi = new FTPServerPI(socket, this.view);
+                pi.start();
+            } catch (ServiceChannelException e) {
+                log.error(e.getMessage());
+            }
         }
     }
 

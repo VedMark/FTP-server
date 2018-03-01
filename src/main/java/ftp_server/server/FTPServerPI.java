@@ -12,7 +12,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
-class FTPServerPI implements Runnable {
+class FTPServerPI implements Runnable, ConnectionListenerDTP {
     private static final Logger log = Logger.getLogger(Main.class.getName());
 
     private Socket socket;
@@ -26,27 +26,21 @@ class FTPServerPI implements Runnable {
 
     private View view;
 
-    FTPServerPI(Socket socket, View view) throws IOException {
+    FTPServerPI(Socket socket, View view) throws ServiceChannelException {
         this.socket = socket;
-        InetSocketAddress addr = new InetSocketAddress(socket.getLocalAddress().getHostAddress(), socket.getPort());
-        this.serverDTP.getParameters().setServerAddress(addr);
         this.view = view;
 
-        this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        InetSocketAddress addr = new InetSocketAddress(socket.getLocalAddress().getHostAddress(), socket.getPort());
+        this.serverDTP.getParameters().setServerAddress(addr);
+        this.serverDTP.addListener(this);
 
-        sendMessage(getCode220FormattedString(new Reply(Reply.Code.CODE_220)));
-    }
-
-    private String getCode220FormattedString(Reply reply) {
-        Integer res; // converting milliseconds to minutes
         try {
-            res = FTPProperties.getTimeout() / (60 * 1000);
-        } catch (ConfigException e) {
-            res = 0;
+            this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            sendMessage(getCode220FormattedString(new Reply(Reply.Code.CODE_220)));
+        } catch (IOException exception) {
+            throw new ServiceChannelException(exception.getMessage());
         }
-
-        return String.format(reply.getMessage(), res, res == 1 ? "" : "s");
     }
 
     public void start() {
@@ -77,20 +71,23 @@ class FTPServerPI implements Runnable {
         try {
             listenToConnections();
         }
-        catch (IOException exception) {
+        catch (IOException | ServiceChannelException exception) {
             this.stop();
             log.error(exception.getMessage());
         }
         this.stop();
     }
 
-    private void listenToConnections() throws IOException {
+    private void listenToConnections() throws IOException, ServiceChannelException {
         while (true) {
             Command request = receiveMessage();
             request.execute();
-            sendMessage(request.getResponseMessage());
+            String message = request.getResponseMessage();
+            if(message != null) {
+                sendMessage(message);
+            }
 
-            if(request instanceof QUIT) {
+            if (request instanceof QUIT) {
                 break;
             }
         }
@@ -108,11 +105,78 @@ class FTPServerPI implements Runnable {
             this.updateDialog(message + "\n");
             return cmdController.createCommand(message);
         } else {
-            throw new SocketException("Connection unexpectedly closed by remote socket");
+            throw new SocketException("Connection unexpectedly closed by remote passiveSocket");
         }
     }
 
     private void updateDialog(String info) {
         this.view.update(info);
+    }
+
+    @Override
+    public void onActionNegotiated(Result result) throws ServiceChannelException {
+        String message;
+        if(result == Result.GOOD) {
+            message = serverDTP.getParameters().isPassiveProcess() ?
+                    getCode227FormattedString(new Reply(Reply.Code.CODE_227)) :
+                    getCode200FormattedString(new Reply(Reply.Code.CODE_200));
+        } else {
+            message = new Reply(Reply.Code.CODE_425).getMessage();
+        }
+
+        try {
+            sendMessage(message);
+        } catch (IOException exception) {
+            throw new ServiceChannelException(exception.getMessage());
+        }
+    }
+
+    @Override
+    public void onTransferFinished(Result result) throws ServiceChannelException {
+        String message = result == Result.GOOD ?
+                String.format(new Reply(Reply.Code.CODE_226).getMessage(), "File transfer successful") :
+                new Reply(Reply.Code.CODE_451).getMessage();
+        try {
+            sendMessage(message);
+        }
+        catch (IOException exception) {
+            throw new ServiceChannelException(exception.getMessage());
+        }
+    }
+
+    @Override
+    public void onConnectionAborted() throws ServiceChannelException {
+        try {
+            sendMessage(String.format(
+                    new Reply(Reply.Code.CODE_226).getMessage(),
+                    "Abort command was successfully processed"
+            ));
+        }
+        catch (IOException exception) {
+            throw new ServiceChannelException(exception.getMessage());
+        }
+    }
+
+    private String getCode200FormattedString(Reply reply) {
+        return String.format(reply.getMessage(), "PORT command successful");
+    }
+
+    private String getCode220FormattedString(Reply reply) {
+        Integer res; // converting milliseconds to minutes
+        try {
+            res = FTPProperties.getTimeout() / (60 * 1000);
+        } catch (ConfigException e) {
+            res = 0;
+        }
+        return String.format(reply.getMessage(), res, res == 1 ? "" : "s");
+    }
+
+    private String getCode227FormattedString(Reply reply) {
+        InetSocketAddress serverAddress = serverDTP.getParameters().getServerAddress();
+        String[] arr = serverAddress.getAddress().getHostAddress().split("\\.");
+        String el4 = String.valueOf(serverAddress.getPort() / 256);
+        String el5 = String.valueOf(serverAddress.getPort() % 256);
+
+        return String.format(reply.getMessage(), arr[0], arr[1], arr[2], arr[3], el4, el5);
     }
 }

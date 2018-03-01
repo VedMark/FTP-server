@@ -11,7 +11,7 @@ class FTPCommandController {
 
     public Command createCommand(String message) {
         String cmd;
-        String param = null;
+        String param = "";
         if(message.indexOf(' ') != -1) {
             cmd = message.substring(0, message.indexOf(' '));
             param = message.substring(message.indexOf(' ') + 1);

@@ -2,6 +2,7 @@ package ftp_server.command;
 
 import ftp_server.reply.Reply;
 import ftp_server.server.FTPServerDTP;
+import ftp_server.server.ServiceChannelException;
 
 import java.net.InetSocketAddress;
 import java.util.regex.Matcher;
@@ -20,7 +21,7 @@ public class PORT implements Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws ServiceChannelException {
         if(this.receiver.getParameters().isAuthorized()) {
 
             if(checkWithRegex()) {
@@ -29,7 +30,8 @@ public class PORT implements Command {
                 Integer port = (Integer.parseInt(arr[4]) << 8) + Integer.parseInt(arr[5]);
 
                 receiver.getParameters().toActiveProcess(new InetSocketAddress(addr, port));
-                reply = new Reply(Reply.Code.CODE_200);
+                receiver.start();
+                reply = new Reply(Reply.Code.CODE_150);
             } else {
                 reply = new Reply(Reply.Code.CODE_501);
             }
@@ -47,8 +49,8 @@ public class PORT implements Command {
     @Override
     public String getResponseMessage() throws UnexpectedCodeException {
         String message;
-        if(Reply.Code.CODE_200 == this.reply.getReplyCode()) {
-            message = getCode200FormattedString();
+        if(Reply.Code.CODE_150 == this.reply.getReplyCode()) {
+            message = getCode150FormattedString();
         } else if(Reply.Code.CODE_501 == this.reply.getReplyCode()) {
             message = this.reply.getMessage();
         } else if(Reply.Code.CODE_530 == this.reply.getReplyCode()) {
@@ -60,8 +62,9 @@ public class PORT implements Command {
         return message;
     }
 
-    private String getCode200FormattedString() {
-        return String.format(this.reply.getMessage(), "entering Active Mode");
+    private String getCode150FormattedString() {
+        String message = "Connecting to port " + receiver.getParameters().getUserAddress().getPort();
+        return String.format(reply.getMessage(), message);
     }
 
     private String getCode530FormattedString() {

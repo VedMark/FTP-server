@@ -22,7 +22,11 @@ class FTPServerPITest extends ApplicationTests {
         server = new ServerSocket(8000, 0, InetAddress.getByName(null));
         Socket s = server.accept();
 
-        this.serverPI = new FTPServerPI(s, new LogComponent());
+        try {
+            this.serverPI = new FTPServerPI(s, new LogComponent());
+        } catch (ServiceChannelException e) {
+            fail("Could not start Server PI");
+        }
         this.serverPI.start();
         stopServerAfter(500);
     }

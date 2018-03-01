@@ -1,6 +1,7 @@
 package ftp_server.command;
 
 import ftp_server.server.FTPServerDTP;
+import ftp_server.server.ServiceChannelException;
 import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
@@ -12,7 +13,11 @@ class PORTTest {
     @Test
     void execute_NotLoggedIn_Code530() throws UnexpectedCodeException {
         PORT pasv = new PORT(new FTPServerDTP(), "127,0,0,1,31,64");
-        pasv.execute();
+        try {
+            pasv.execute();
+        } catch (ServiceChannelException e) {
+            fail("service channel exception");
+        }
         String response = pasv.getResponseMessage();
         assertEquals("530 You are not logged in\r\n", response);
     }
@@ -27,9 +32,13 @@ class PORTTest {
         pass.execute();
 
         PORT port = new PORT(serverDTP, "127,0,0,1,31,64");
-        port.execute();
+        try {
+            port.execute();
+        } catch (ServiceChannelException e) {
+            fail("service channel exception");
+        }
         String response = port.getResponseMessage();
-        assertEquals("200 Command okay, entering Active Mode\r\n", response);
+        assertEquals("150 Connecting to port 8000\r\n", response);
         assertEquals("127.0.0.1", serverDTP.getParameters().getUserAddress().getAddress().getHostAddress());
         assertEquals(8000, serverDTP.getParameters().getUserAddress().getPort());
     }

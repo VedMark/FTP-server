@@ -39,10 +39,7 @@ public class STRU implements Command {
                 receiver.getParameters().setStructure(Structure.FILE);
                 reply = new Reply(Reply.Code.CODE_200);
                 break;
-            case "R":
-                receiver.getParameters().setStructure(Structure.RECORD);
-                reply = new Reply(Reply.Code.CODE_200);
-                break;
+            case "R": reply = new Reply(Reply.Code.CODE_504);   break;
             case "P": reply = new Reply(Reply.Code.CODE_504);   break;
         }
     }

@@ -91,7 +91,7 @@ class FTPTransferParametersTest {
 
     @Test
     void isPassiveProcess() {
-        assertEquals(true, parameters.isPassiveProcess());
+        assertEquals(false, parameters.isPassiveProcess());
     }
 
     @Test
@@ -101,7 +101,7 @@ class FTPTransferParametersTest {
 
     @Test
     void setType() {
-        final Type type = Type.BINARY;
+        final Type type = Type.IMAGE;
         parameters.setType(type);
         assertEquals(type, parameters.getType());
     }

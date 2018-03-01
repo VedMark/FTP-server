@@ -4,6 +4,8 @@ import ftp_server.reply.Reply;
 import ftp_server.server.FTPProperties;
 import ftp_server.server.FTPServerDTP;
 
+import java.util.MissingResourceException;
+
 public class PASS implements Command {
     private static final String AUTHENTICATION_FAILED_MESSAGE = "Login authentication failed";
     private FTPServerDTP receiver;
@@ -51,6 +53,11 @@ public class PASS implements Command {
     }
 
     private Boolean verifyAccount() {
-        return FTPProperties.getPassword(this.receiver.getParameters().getUsername()).equals(this.password);
+        try {
+            return FTPProperties.getPassword(this.receiver.getParameters().getUsername()).equals(this.password);
+        }
+        catch(MissingResourceException exception) {
+            return false;
+        }
     }
 }

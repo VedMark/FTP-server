@@ -16,7 +16,7 @@ public class FTPTransferParameters {
     private String              workingDir      = DEFAULT_WORKING_DIR;
     private InetSocketAddress   userAddress     = null;
     private InetSocketAddress   serverAddress   = null;
-    private Boolean             isPassive       = true;
+    private Boolean             isPassive       = false;
     private Type                type            = DEFAULT_TYPE;
     private Mode                mode            = DEFAULT_MODE;
     private Form                form            = DEFAULT_FORM;

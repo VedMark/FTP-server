@@ -44,7 +44,9 @@ CLASSES = \
 	src/main/java/ftp_server/command/UnexpectedCodeException.java \
         src/main/java/ftp_server/command/USER.java \
         src/main/java/ftp_server/reply/Reply.java \
+	src/main/java/ftp_server/server/ActiveConnection.java \
         src/main/java/ftp_server/server/ConfigException.java \
+	src/main/java/ftp_server/server/Form.java \
         src/main/java/ftp_server/server/FTPCommandController.java \
         src/main/java/ftp_server/server/FTPProperties.java \
         src/main/java/ftp_server/server/FTPServerDTP.java \
@@ -52,6 +54,8 @@ CLASSES = \
         src/main/java/ftp_server/server/FTPServerPI.java \
         src/main/java/ftp_server/server/FTPTransferParameters.java \
         src/main/java/ftp_server/server/Mode.java \
+	src/main/java/ftp_server/server/PassiveConnection.java \
+	src/main/java/ftp_server/server/ServerChannelException.java \
         src/main/java/ftp_server/server/Structure.java \
         src/main/java/ftp_server/server/Type.java \
 	src/main/java/ftp_server/utils/FileSystem.java \

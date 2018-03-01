@@ -28,7 +28,7 @@ public class Reply {
         map.put(Code.CODE_110, "110 Restart marker reply\r\n");
         map.put(Code.CODE_120, "120 Service ready in %s minutes\r\n");
         map.put(Code.CODE_125, "125 Data connection already open; transfer starting\r\n");
-        map.put(Code.CODE_150, "150 File status okay; about to open data connection\r\n");
+        map.put(Code.CODE_150, "150 %s\r\n");
         map.put(Code.CODE_200, "200 Command okay, %s\r\n");
         map.put(Code.CODE_202, "202 Command not implemented, superfluous at this site\r\n");
         map.put(Code.CODE_211, "211 %s\r\n");
@@ -42,7 +42,7 @@ public class Reply {
         map.put(Code.CODE_221, "221-Goodbye\n" +
                 "221 Logout\r\n");
         map.put(Code.CODE_225, "225 Data connection open; no transfer in progress\r\n");
-        map.put(Code.CODE_226, "226 Closing data connection; file transfer successful\r\n");
+        map.put(Code.CODE_226, "226 %s\r\n");
         map.put(Code.CODE_227, "227 Entering Passive Mode(%s,%s,%s,%s,%s,%s)\r\n");
         map.put(Code.CODE_230, "230 User logged in, proceed\r\n");
         map.put(Code.CODE_250, "250 Requested file action okay\r\n");
@@ -66,7 +66,7 @@ public class Reply {
         map.put(Code.CODE_550, "550 Requested action not taken, %s\r\n");
         map.put(Code.CODE_551, "551 Requested action aborted: page type unknown\r\n");
         map.put(Code.CODE_552, "552 Requested file action aborted, exceeded storage allocation\r\n");
-        map.put(Code.CODE_553, "553 Requested action not taken, file name not allowed\r\n");
+        map.put(Code.CODE_553, "553 Requested action not taken, %s\r\n");
     }
 
     public Reply(Code replyCode) {
