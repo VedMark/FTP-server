@@ -16,7 +16,7 @@ public class FileSystem {
     public static String normalizeDirPath(String homename, String pathname) {
         String answer;
 
-        Path path = Paths.get(isAbsolutePathname(pathname) ? pathname : homename + "/" + pathname);
+        Path path = Paths.get(isAbsolutePathname(pathname) ? homename + pathname : homename + "/" + pathname);
 
         if (isValidDirectoryName(path)) {
             String normPathname = path.normalize().toString();
@@ -30,7 +30,7 @@ public class FileSystem {
     }
 
     public static String getAbsolutePath(String homename, String pathname) {
-        Path path = Paths.get(isAbsolutePathname(pathname) ? pathname : homename + "/" + pathname);
+        Path path = Paths.get(isAbsolutePathname(pathname) ? homename + pathname : homename + "/" + pathname);
 
         return path.normalize().toString();
     }

@@ -17,7 +17,9 @@ public class STAT implements Command {
         this.receiver = serverDTP;
         this.pathname = pathname.trim();
         if(!pathname.isEmpty()) {
-            this.pathname = isAbsolutePath(pathname) ? pathname : receiver.getParameters().getHome() + "/" + pathname;
+            this.pathname = isAbsolutePath(pathname) ?
+                    receiver.getParameters().getHome() + pathname :
+                    receiver.getParameters().getHome() + "/" + pathname;
         }
     }
 

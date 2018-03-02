@@ -21,7 +21,7 @@ public class PORT implements Command {
     }
 
     @Override
-    public void execute() throws ServiceChannelException {
+    public void execute() {
         if(this.receiver.getParameters().isAuthorized()) {
 
             if(checkWithRegex()) {
@@ -30,7 +30,6 @@ public class PORT implements Command {
                 Integer port = (Integer.parseInt(arr[4]) << 8) + Integer.parseInt(arr[5]);
 
                 receiver.getParameters().toActiveProcess(new InetSocketAddress(addr, port));
-                receiver.start();
                 reply = new Reply(Reply.Code.CODE_150);
             } else {
                 reply = new Reply(Reply.Code.CODE_501);

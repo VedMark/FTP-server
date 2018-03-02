@@ -1,13 +1,14 @@
 package ftp_server.command;
 
 import ftp_server.server.DataTransferProcess;
+import ftp_server.server.ServiceChannelException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LISTTest {
     @Test
-    void execute_Code530() throws UnexpectedCodeException {
+    void execute_Code530() throws UnexpectedCodeException, ServiceChannelException {
         LIST list = new LIST(new DataTransferProcess(), "admin");
         list.execute();
         String response = list.getResponseMessage();
@@ -15,7 +16,7 @@ class LISTTest {
     }
 
     @Test
-    void execute_Code202() throws UnexpectedCodeException {
+    void execute_Code202() throws UnexpectedCodeException, ServiceChannelException {
         DataTransferProcess serverDTP = new DataTransferProcess();
         USER user = new USER(serverDTP, "admin");
         PASS pass = new PASS(serverDTP, "admin");

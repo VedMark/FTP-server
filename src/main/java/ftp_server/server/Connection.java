@@ -1,16 +1,19 @@
 package ftp_server.server;
 
+import ftp_server.utils.FileSystem;
+
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 abstract class Connection implements Runnable {
 
     private enum Operation {
-        SEND, RECEIVE
+        SEND, RECEIVE, LIST
     }
 
     private static final Integer BYTE_BUFFER_SIZE = 0x4000;
@@ -107,6 +110,43 @@ abstract class Connection implements Runnable {
         fileChannel.close();
     }
 
+    public void sendString(Path path) {
+        filePath = path;
+        operation = Operation.LIST;
+        notifyLock();
+    }
+
+    private void writeString() throws IOException {
+        sendFilesInfo(getFilesInfo());
+    }
+
+    private String getFilesInfo() {
+        String info = "";
+        if(Files.isDirectory(Paths.get(filePath.toString()))) {
+            info = FileSystem.dirInfo(parameters.getHome(), filePath.toString());
+        } else if (Files.isRegularFile(Paths.get(filePath.toString()))){
+            info = FileSystem.fileInfo(filePath.toString());
+        }
+
+        return info;
+    }
+
+    private void sendFilesInfo(String info) throws IOException {
+        ByteBuffer buffer = ByteBuffer.allocateDirect(BYTE_BUFFER_SIZE);
+        BufferedReader reader = new BufferedReader(new StringReader(info));
+
+        String currentLine;
+
+        while ((currentLine = reader.readLine()) != null) {
+            buffer.clear();
+            buffer.put((currentLine + "\r\n").getBytes());
+            buffer.flip();
+            channel.write(buffer);
+        }
+
+        reader.close();
+    }
+
     public void run() {
         try {
             synchronized(lock)
@@ -119,8 +159,10 @@ abstract class Connection implements Runnable {
 
             if(Operation.RECEIVE == operation) {
                 read();
-            } else {
+            } else if(Operation.SEND == operation) {
                 write();
+            } else {
+                writeString();
             }
             serverDTP.handleCompleted(true);
         }

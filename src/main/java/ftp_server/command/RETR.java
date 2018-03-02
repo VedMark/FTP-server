@@ -3,6 +3,7 @@ package ftp_server.command;
 import ftp_server.Main;
 import ftp_server.reply.Reply;
 import ftp_server.server.DataTransferProcess;
+import ftp_server.server.ServiceChannelException;
 import ftp_server.utils.FileSystem;
 import org.apache.log4j.Logger;
 
@@ -23,7 +24,7 @@ public class RETR implements Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws ServiceChannelException {
         if(!receiver.getParameters().isAuthorized()) {
             reply = new Reply(Reply.Code.CODE_530);
         } else {
@@ -33,6 +34,7 @@ public class RETR implements Command {
             } else if(Files.isDirectory(path)) {
                 reply = new Reply(Reply.Code.CODE_450);
             } else if(Files.isRegularFile(path)) {
+                receiver.start();
                 receiver.retrieveFile(path);
             }
         }

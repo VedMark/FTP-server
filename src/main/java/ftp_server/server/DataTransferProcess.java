@@ -58,6 +58,13 @@ public class DataTransferProcess {
         }
     }
 
+
+    public void sendListInfo(Path path) {
+        if(connection != null) {
+            connection.sendString(path);
+        }
+
+    }
     public Boolean isConnectionOpen() {
         return isConnectionOpen;
     }

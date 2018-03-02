@@ -2,6 +2,7 @@ package ftp_server.command;
 
 import ftp_server.reply.Reply;
 import ftp_server.server.DataTransferProcess;
+import ftp_server.server.ServiceChannelException;
 import ftp_server.utils.FileSystem;
 
 import java.nio.file.Path;
@@ -19,11 +20,12 @@ public class STOR implements Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws ServiceChannelException {
         if(!receiver.getParameters().isAuthorized()) {
             reply = new Reply(Reply.Code.CODE_530);
         } else {
             Path path = Paths.get(FileSystem.getAbsolutePath(receiver.getParameters().getHome(), pathname));
+            receiver.start();
             receiver.receiveFile(path);
         }
     }
