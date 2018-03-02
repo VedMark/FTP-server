@@ -35,7 +35,7 @@ class TYPETest {
         TYPE type = new TYPE(serverDTP, "A");
         type.execute();
         String response = type.getResponseMessage();
-        assertEquals("200 Command okay, type: ascii\r\n", response);
+        assertEquals("200 type: ascii\r\n", response);
         assertEquals(TypeEnum.ASCII, serverDTP.getParameters().getType());
     }
 
@@ -44,7 +44,7 @@ class TYPETest {
         TYPE type = new TYPE(serverDTP, "A N");
         type.execute();
         String response = type.getResponseMessage();
-        assertEquals("200 Command okay, type: ascii\r\n", response);
+        assertEquals("200 type: ascii\r\n", response);
         assertEquals(TypeEnum.ASCII, serverDTP.getParameters().getType());
         assertEquals(FormEnum.NON_PRINT, serverDTP.getParameters().getForm());
     }
@@ -71,7 +71,7 @@ class TYPETest {
         TYPE type = new TYPE(serverDTP, "I");
         type.execute();
         String response = type.getResponseMessage();
-        assertEquals("200 Command okay, type: image\r\n", response);
+        assertEquals("200 type: image\r\n", response);
         assertEquals(TypeEnum.IMAGE, serverDTP.getParameters().getType());
     }
 

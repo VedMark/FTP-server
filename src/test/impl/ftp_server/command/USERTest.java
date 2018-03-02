@@ -31,7 +31,6 @@ class USERTest {
         String response = user.getResponseMessage();
         assertEquals("230 User logged in, proceed\r\n", response);
         assertEquals(true, dtp.getParameters().isAuthorized());
-        assertEquals("/home/mark", dtp.getParameters().getHome());
     }
 
     @Test
@@ -64,6 +63,5 @@ class USERTest {
         String response = user.getResponseMessage();
         assertEquals("530 You are already logged in\r\n", response);
         assertEquals(true, dtp.getParameters().isAuthorized());
-        assertEquals("/home/mark", dtp.getParameters().getHome());
     }
 }

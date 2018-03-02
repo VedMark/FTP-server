@@ -40,7 +40,7 @@ public class CDUP implements Command {
     private String getCode200FormattedString() {
         return String.format(
                 this.reply.getMessage(),
-                "current directory is " + receiver.getParameters().getWorkingDir()
+                "Current directory is " + receiver.getParameters().getWorkingDir()
         );
     }
 

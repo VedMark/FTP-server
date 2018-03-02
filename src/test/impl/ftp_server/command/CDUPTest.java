@@ -38,7 +38,7 @@ class CDUPTest {
         CDUP cdup = new CDUP(serverDTP);
         cdup.execute();
         String response = cdup.getResponseMessage();
-        assertEquals("200 Command okay, current directory is /\r\n", response);
+        assertEquals("200 Current directory is /\r\n", response);
         assertEquals("/", serverDTP.getParameters().getWorkingDir());
 
         dir.delete();
@@ -54,7 +54,7 @@ class CDUPTest {
         CDUP cdup = new CDUP(serverDTP);
         cdup.execute();
         String response = cdup.getResponseMessage();
-        assertEquals("200 Command okay, current directory is /\r\n", response);
+        assertEquals("200 Current directory is /\r\n", response);
         assertEquals("/", serverDTP.getParameters().getWorkingDir());
     }
 }

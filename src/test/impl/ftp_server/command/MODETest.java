@@ -34,7 +34,7 @@ class MODETest {
         MODE mode = new MODE(serverDTP, "S");
         mode.execute();
         String response = mode.getResponseMessage();
-        assertEquals("200 Command okay, mode: stream\r\n", response);
+        assertEquals("200 mode: stream\r\n", response);
         assertEquals(ModeEnum.Stream, serverDTP.getParameters().getMode());
     }
 

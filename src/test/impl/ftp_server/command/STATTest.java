@@ -51,7 +51,7 @@ class STATTest {
         STAT stat = new STAT(serverDTP, "");
         stat.execute();
         String response = stat.getResponseMessage();
-        assertEquals("211 ModeEnum: stream; TypeEnum: ascii; FormEnum: non-print; StructureEnum: file\r\n", response);
+        assertEquals("211 mode: stream; type: ascii; form: non-print; structure: file\r\n", response);
     }
 
     @Test
@@ -69,9 +69,9 @@ class STATTest {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(file.lastModified());
 
-        assertEquals("213 -rw-   1 mark     mark            0 "
+        assertEquals("213-STAT\n-rw-   1 mark     mark            0 "
                 + DATE_FORMAT.format(cal.getTime())
-                + " ftp\r\n", response);
+                + " ftp\n213\r\n", response);
     }
 
     @Test
@@ -95,7 +95,7 @@ class STATTest {
         stat.execute();
         String response = stat.getResponseMessage();
         file1.delete();
-        assertEquals("212-" + str1 + str2 + str3 + "212\r\n", response);
+        assertEquals("212-STAT\n" + str1 + str2 + str3 + "212\r\n", response);
     }
 
     @Test

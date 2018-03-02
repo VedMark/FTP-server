@@ -31,7 +31,7 @@ class PASVTest {
     @Test
     void execute_Code227() throws UnexpectedCodeException {
         DataTransferProcess serverDTP = new DataTransferProcess();
-        serverDTP.getParameters().setServerAddress(new InetSocketAddress("127.0.0.1", 8000));
+        serverDTP.getParameters().setServerAddress(new InetSocketAddress(8000));
         USER user = new USER(serverDTP, "admin");
         PASS pass = new PASS(serverDTP, "admin");
         user.execute();
@@ -51,11 +51,12 @@ class PASVTest {
         }
         String response = pasv.getResponseMessage();
         try {
-            client.close();
+            if (client != null)
+                client.close();
         } catch (IOException ignored) { }
         thread.interrupt();
         assertEquals(String.format(
-                "150 Accepted data connection\r\n", arr[0], arr[1], arr[2], arr[3], el4, el5),
+                "227 Entering Passive ModeEnum(0,0,0,0,31,64)\r\n", arr[0], arr[1], arr[2], arr[3], el4, el5),
                 response
         );
     }
@@ -65,8 +66,8 @@ class PASVTest {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(1000);
-                    client = new Socket(InetAddress.getByName(null).getHostAddress(), ServerProperties.getPortDTP());
+                    Thread.sleep(500);
+                    client = new Socket(InetAddress.getByName(null).getHostAddress(), 8000);
                 } catch (Exception e) {
                     fail("Could not run client");
                 }

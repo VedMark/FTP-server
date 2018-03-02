@@ -12,6 +12,6 @@ class NOOPTest {
         noop.execute();
 
         String response = noop.getResponseMessage();
-        assertEquals("200 Command okay, service ready\r\n", response);
+        assertEquals("200 Service ready\r\n", response);
     }
 }

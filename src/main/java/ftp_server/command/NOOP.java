@@ -16,6 +16,6 @@ public class NOOP implements Command {
     }
 
     private String getCode200FormattedString() {
-        return String.format(this.reply.getMessage(), "service ready");
+        return String.format(this.reply.getMessage(), "Service ready");
     }
 }

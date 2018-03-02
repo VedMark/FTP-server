@@ -34,7 +34,7 @@ class STRUTest {
         STRU stru = new STRU(serverDTP, "F");
         stru.execute();
         String response = stru.getResponseMessage();
-        assertEquals("200 Command okay, structure: stream\r\n", response);
+        assertEquals("200 structure: stream\r\n", response);
         assertEquals(ModeEnum.Stream, serverDTP.getParameters().getMode());
     }
 

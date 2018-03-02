@@ -30,7 +30,7 @@ class PORTTest {
         PORT port = new PORT(serverDTP, "127,0,0,1,31,64");
         port.execute();
         String response = port.getResponseMessage();
-        assertEquals("150 Connecting to port 8000\r\n", response);
+        assertEquals("200 PORT command successful\r\n", response);
         assertEquals("127.0.0.1", serverDTP.getParameters().getUserAddress().getAddress().getHostAddress());
         assertEquals(8000, serverDTP.getParameters().getUserAddress().getPort());
     }
