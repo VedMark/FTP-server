@@ -65,10 +65,10 @@ public class RETR implements Command {
     }
 
     private String getCode450FormattedString() {
-        return String.format(this.reply.getMessage(), "file does not exists");
+        return String.format(this.reply.getMessage(), "can be retrieved only regular files");
     }
 
     private String getCode550FormattedString() {
-        return String.format(this.reply.getMessage(), "can be retrieved only regular files");
+        return String.format(this.reply.getMessage(), "file does not exists");
     }
 }

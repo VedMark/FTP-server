@@ -4,6 +4,8 @@ import ftp_server.reply.Reply;
 import ftp_server.server.DataTransferProcess;
 import ftp_server.server.ServiceChannelException;
 
+import java.net.InetSocketAddress;
+
 public class PASV implements Command {
     private DataTransferProcess receiver;
     Reply reply;
@@ -16,7 +18,7 @@ public class PASV implements Command {
     public void execute() throws ServiceChannelException {
         if(this.receiver.getParameters().isAuthorized()) {
             receiver.getParameters().toPassiveProcess();
-            reply = new Reply(Reply.Code.CODE_150);
+            reply = new Reply(Reply.Code.CODE_227);
             receiver.start();
         } else {
             reply = new Reply(Reply.Code.CODE_530);
@@ -26,8 +28,8 @@ public class PASV implements Command {
     @Override
     public String getResponseMessage() throws UnexpectedCodeException {
         String message;
-        if(Reply.Code.CODE_150 == this.reply.getReplyCode()) {
-            message = getCode150FormattedString();
+        if(Reply.Code.CODE_227 == this.reply.getReplyCode()) {
+            message = getCode227FormattedString();
         } else if(Reply.Code.CODE_530 == this.reply.getReplyCode()) {
             message = getCode530FormattedString();
         } else {
@@ -37,9 +39,13 @@ public class PASV implements Command {
         return message;
     }
 
-    private String getCode150FormattedString() {
-        String message =  "Accepted data connection";
-        return String.format(reply.getMessage(), message);
+    private String getCode227FormattedString() {
+        InetSocketAddress serverAddress = receiver.getParameters().getServerAddress();
+        String[] arr = serverAddress.getAddress().getHostAddress().split("\\.");
+        String el4 = String.valueOf(serverAddress.getPort() / 256);
+        String el5 = String.valueOf(serverAddress.getPort() % 256);
+
+        return String.format(reply.getMessage(), arr[0], arr[1], arr[2], arr[3], el4, el5);
     }
 
     private String getCode530FormattedString() {

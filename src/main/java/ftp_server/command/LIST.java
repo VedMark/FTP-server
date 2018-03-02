@@ -18,9 +18,7 @@ public class LIST implements Command {
         this.receiver = serverDTP;
         this.pathname = pathname.trim();
         if(!pathname.isEmpty()) {
-            this.pathname = isAbsolutePath(pathname) ?
-                    receiver.getParameters().getHome() + pathname :
-                    receiver.getParameters().getHome() + "/" + pathname;
+            this.pathname = isAbsolutePath(pathname) ? pathname : receiver.getParameters().getHome() + "/" + pathname;
         }
     }
 
@@ -28,7 +26,7 @@ public class LIST implements Command {
     public void execute() throws ServiceChannelException {
         if(receiver.getParameters().isAuthorized()) {
             if (pathname.isEmpty()) {
-                pathname = ".";
+                pathname = receiver.getParameters().getHome();
             }
 
             receiver.start();
@@ -40,11 +38,13 @@ public class LIST implements Command {
 
     @Override
     public String getResponseMessage() throws UnexpectedCodeException {
-        String message;
-        if(Reply.Code.CODE_530 == this.reply.getReplyCode()) {
-            message = getCode530FormattedString();
-        } else {
-            throw new UnexpectedCodeException();
+        String message = null;
+        if(reply != null) {
+            if (Reply.Code.CODE_530 == this.reply.getReplyCode()) {
+                message = getCode530FormattedString();
+            } else {
+                throw new UnexpectedCodeException();
+            }
         }
 
         return message;

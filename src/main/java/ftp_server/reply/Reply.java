@@ -29,7 +29,7 @@ public class Reply {
         map.put(Code.CODE_120, "120 Service ready in %s minutes\r\n");
         map.put(Code.CODE_125, "125 Data connection already open; transfer starting\r\n");
         map.put(Code.CODE_150, "150 %s\r\n");
-        map.put(Code.CODE_200, "200 Command okay, %s\r\n");
+        map.put(Code.CODE_200, "200 %s\r\n");
         map.put(Code.CODE_202, "202 Command not implemented, superfluous at this site\r\n");
         map.put(Code.CODE_211, "211 %s\r\n");
         map.put(Code.CODE_212, "212-STAT\n%s212\r\n");

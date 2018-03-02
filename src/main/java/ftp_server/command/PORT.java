@@ -30,7 +30,7 @@ public class PORT implements Command {
                 Integer port = (Integer.parseInt(arr[4]) << 8) + Integer.parseInt(arr[5]);
 
                 receiver.getParameters().toActiveProcess(new InetSocketAddress(addr, port));
-                reply = new Reply(Reply.Code.CODE_150);
+                reply = new Reply(Reply.Code.CODE_200);
             } else {
                 reply = new Reply(Reply.Code.CODE_501);
             }
@@ -48,8 +48,8 @@ public class PORT implements Command {
     @Override
     public String getResponseMessage() throws UnexpectedCodeException {
         String message;
-        if(Reply.Code.CODE_150 == this.reply.getReplyCode()) {
-            message = getCode150FormattedString();
+        if(Reply.Code.CODE_200 == this.reply.getReplyCode()) {
+            message = getCode200FormattedString();
         } else if(Reply.Code.CODE_501 == this.reply.getReplyCode()) {
             message = this.reply.getMessage();
         } else if(Reply.Code.CODE_530 == this.reply.getReplyCode()) {
@@ -61,9 +61,8 @@ public class PORT implements Command {
         return message;
     }
 
-    private String getCode150FormattedString() {
-        String message = "Connecting to port " + receiver.getParameters().getUserAddress().getPort();
-        return String.format(reply.getMessage(), message);
+    private String getCode200FormattedString() {
+        return String.format(reply.getMessage(), "PORT command successful");
     }
 
     private String getCode530FormattedString() {

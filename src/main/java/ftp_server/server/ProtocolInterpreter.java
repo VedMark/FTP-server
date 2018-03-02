@@ -130,9 +130,7 @@ class ProtocolInterpreter implements Runnable, DataConnectionListener {
     public void onActionNegotiated(Result result) throws ServiceChannelException {
         String message;
         if(result == Result.GOOD) {
-            message = serverDTP.getParameters().isPassiveProcess() ?
-                    getCode227FormattedString(new Reply(Reply.Code.CODE_227)) :
-                    getCode200FormattedString(new Reply(Reply.Code.CODE_200));
+            message = getCode150FormattedString(new Reply(Reply.Code.CODE_150));
         } else {
             message = new Reply(Reply.Code.CODE_425).getMessage();
         }
@@ -170,8 +168,11 @@ class ProtocolInterpreter implements Runnable, DataConnectionListener {
         }
     }
 
-    private String getCode200FormattedString(Reply reply) {
-        return String.format(reply.getMessage(), "PORT command successful");
+    private String getCode150FormattedString(Reply reply) {
+        String message = serverDTP.getParameters().isPassiveProcess() ?
+                "Accepted data connection" :
+                "Connecting to port " + serverDTP.getParameters().getUserAddress().getPort();
+        return String.format(reply.getMessage(),message);
     }
 
     private String getCode220FormattedString(Reply reply) {
@@ -182,14 +183,5 @@ class ProtocolInterpreter implements Runnable, DataConnectionListener {
             res = 0;
         }
         return String.format(reply.getMessage(), res, res == 1 ? "" : "s");
-    }
-
-    private String getCode227FormattedString(Reply reply) {
-        InetSocketAddress serverAddress = serverDTP.getParameters().getServerAddress();
-        String[] arr = serverAddress.getAddress().getHostAddress().split("\\.");
-        String el4 = String.valueOf(serverAddress.getPort() / 256);
-        String el5 = String.valueOf(serverAddress.getPort() % 256);
-
-        return String.format(reply.getMessage(), arr[0], arr[1], arr[2], arr[3], el4, el5);
     }
 }
